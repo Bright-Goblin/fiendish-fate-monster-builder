@@ -332,96 +332,88 @@ XP: {monster_xp:,}
 """
 st.text_area("Formatted Stat Block", statblock, height=400)
 
-from docx import Document
-from docx.shared import Pt, RGBColor
-from io import BytesIO
-from docx.oxml.ns import qn
-from docx.oxml import OxmlElement
+from reportlab.lib.pagesizes import LETTER
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_LEFT
+from reportlab.lib.colors import black, white
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.units import inch
+import io
 
-# Keywords to bold in the body
 bold_keywords = [
     "STR", "INT", "DEX", "CON", "POW", "CHA", "TOU", "AP", "Move", "Initiative", "Size",
     "HP", "FP", "EP", "Stun", "Stagger", "DV", "Attack", "Skills", "Specials",
     "Carried Treasure", "Lair Treasure", "Description", "XP"
 ]
 
-def set_paragraph_background(paragraph, color_hex="000000"):
-    """Applies background shading to a paragraph."""
-    p = paragraph._p
-    pPr = p.get_or_add_pPr()
-    shd = OxmlElement('w:shd')
-    shd.set(qn('w:val'), 'clear')
-    shd.set(qn('w:color'), 'auto')
-    shd.set(qn('w:fill'), color_hex)
-    pPr.append(shd)
+def generate_statblock_pdf(name, level, creature_type, statblock):
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=LETTER, topMargin=0.75*inch, bottomMargin=0.75*inch,
+                            leftMargin=0.75*inch, rightMargin=0.75*inch)
 
-# Create Word doc
-doc = Document()
-
-# Title line
-title_para = doc.add_paragraph()
-title_run = title_para.add_run(f"{name.upper()} (L{level} {creature_type.upper()})")
-title_run.font.name = "Book Antiqua"
-title_run.font.size = Pt(12)
-title_run.font.bold = True
-title_run.font.small_caps = True
-title_run.font.color.rgb = RGBColor(255, 255, 255)
-set_paragraph_background(title_para)
-
-# Body formatting
-body_font = "Times New Roman"
-body_font_size = Pt(10)
-
-# Add body lines with bolded keywords
-for line in statblock.splitlines()[1:]:  # Skip title line
-    para = doc.add_paragraph()
+    styles = getSampleStyleSheet()
     
-    # Handle Specials separately
-    if line.startswith("- "):  # Special ability
-        special_name_end = line.find(":")
-        if special_name_end != -1:
-            # Bold the special name
-            name_part = line[:special_name_end + 1]
-            rest_part = line[special_name_end + 1:]
+    title_style = ParagraphStyle(
+        'TitleStyle',
+        fontName='Times-Bold',
+        fontSize=12,
+        leading=14,
+        alignment=TA_LEFT,
+        textColor=white,
+        backColor=black,
+        spaceAfter=1,
+        smallCaps=True,
+    )
 
-            run1 = para.add_run(name_part)
-            run1.font.name = body_font
-            run1.font.size = body_font_size
-            run1.font.bold = True
+    body_style = ParagraphStyle(
+        'BodyStyle',
+        fontName='Times-Roman',
+        fontSize=10,
+        leading=12,
+        spaceAfter=4
+    )
 
-            run2 = para.add_run(rest_part)
-            run2.font.name = body_font
-            run2.font.size = body_font_size
+    elements = []
+
+    # Title
+    title_text = f"{name.upper()} (L{level} {creature_type.upper()})"
+    elements.append(Paragraph(title_text, title_style))
+    elements.append(Spacer(1, 6))
+
+    for line in statblock.splitlines()[1:]:  # skip title line
+        if line.strip().startswith("- "):  # Special
+            special_name_end = line.find(":")
+            if special_name_end != -1:
+                name_part = line[:special_name_end + 1]
+                rest_part = line[special_name_end + 1:]
+                formatted = f"<b>{name_part}</b>{rest_part}"
+            else:
+                formatted = line
         else:
-            # Fallback: treat entire line as normal if no colon
-            run = para.add_run(line)
-            run.font.name = body_font
-            run.font.size = body_font_size
-
-    else:
-        words = line.split(" ")
-        i = 0
-        while i < len(words):
-            word = words[i]
-            text = word
-            if i + 1 < len(words) and words[i + 1].endswith(":"):
-                text = f"{word} {words[i + 1]}"
+            words = line.split(" ")
+            formatted = ""
+            i = 0
+            while i < len(words):
+                word = words[i]
+                text = word
+                if i + 1 < len(words) and words[i + 1].endswith(":"):
+                    text = f"{word} {words[i + 1]}"
+                    i += 1
+                if text.rstrip(":") in bold_keywords:
+                    formatted += f"<b>{text}</b> "
+                else:
+                    formatted += text + " "
                 i += 1
-            run = para.add_run(text + " ")
-            run.font.name = body_font
-            run.font.size = body_font_size
-            if text.rstrip(":") in bold_keywords:
-                run.font.bold = True
-            i += 1
+        elements.append(Paragraph(formatted.strip(), body_style))
 
-# Export to memory
-doc_io = BytesIO()
-doc.save(doc_io)
-doc_io.seek(0)
+    doc.build(elements)
+    buffer.seek(0)
+    return buffer
 
+pdf_bytes = generate_statblock_pdf(name, level, creature_type, statblock)
 st.download_button(
-    label="Download Formatted Statblock (.docx)",
-    data=doc_io,
-    file_name=f"{name}_Statblock.docx",
-    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    label="Download PDF",
+    data=pdf_bytes,
+    file_name=f"{name}_statblock.pdf",
+    mime="application/pdf"
 )
