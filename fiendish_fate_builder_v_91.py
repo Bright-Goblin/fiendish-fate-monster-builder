@@ -25,7 +25,7 @@ creature_type = st.selectbox("Creature Type", [
 ])
 monster_role = st.selectbox("Monster Role", ["Brute", "Caster", "Skirmisher", "Leader"])
 size = st.selectbox("Size", ["Diminutive", "Tiny", "Small", "Medium", "Large", "Huge", "Gigantic", "Colossal"])
-ap = st.number_input("Action Points", 1, 7, 3)
+apv = st.number_input("Action Points", 1, 7, 3)
 
 # Auto-fill movement based on Size
 movement_table = {
@@ -67,12 +67,12 @@ grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 
 st.subheader("Vitals")
 col_a1, col_a2, col_a3, col_a4 = st.columns(4)
 with col_a1:
-    hp = st.number_input("HP", 1, 999, 50)
+    hpv = st.number_input("HP", 1, 999, 50)
 with col_a2:
-    fp = st.number_input("FP", 1, 999, 40)
+    fpv = st.number_input("FP", 1, 999, 40)
 with col_a3:
-    ep = st.number_input("EP", 1, 999, 25)
-stun = int(hp * 0.75)
+    epv = st.number_input("EP", 1, 999, 25)
+stun = int(hpv * 0.75)
 stagger = resilience
 
 # --- Weapons ---
@@ -237,18 +237,18 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Attribute Cost: {mp_attributes}")
 
     # Vitals MP Cost
-    mp_hp = hp / 3
+    mp_hp = hpv / 3
     st.text(f"HP Cost: {mp_hp}")
   
-    mp_fp = fp / 8
+    mp_fp = fpv / 8
     st.text(f"FP Cost: {mp_fp}")  
   
-    mp_ep = ep / 8
+    mp_ep = epv / 8
     st.text(f"EP Cost: {mp_ep}")  
   
     # AP MP Cost
     mp_ap_table = {1: -3, 2: 0, 3: 3, 4: 6, 5: 9, 6: 12, 7: 15}
-    mp_ap = mp_ap_table.get(ap, 0)
+    mp_ap = mp_ap_table.get(apv, 0)
     st.text(f"AP Cost: {mp_ap}")
   
     # Weapon WR MP
@@ -317,8 +317,8 @@ monster_xp = xp_table.get(level, 0)
 st.header("Stat Block Preview")
 statblock = f"""{name.upper()} (L{level} {creature_type.upper()})
 STR {str_score} ({str_mod}) | INT {int_score} ({int_mod}) | DEX {dex_score} ({dex_mod}) | CON {con_score} ({con_mod}) | POW {pow_score} ({pow_mod}) | CHA {cha_score} ({cha_mod}) | TOU {tou_score} ({resilience} / {grit})
-AP {ap} | Move {move} | Initiative {initiative} | Size {size}
-HP {hp} | FP {fp} | EP {ep} | Stun {stun} | Stagger {stagger}
+AP {apv} | Move {move} | Initiative {initiative} | Size {size}
+HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
 Attack: {" | ".join(weapons)}
 Skills: {" | ".join(f"{k} {v}" for k, v in skills.items())}
