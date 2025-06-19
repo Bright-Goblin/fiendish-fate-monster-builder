@@ -213,7 +213,7 @@ lair_treasure = st.text_input("Lair Treasure", "Common treasure table.")
 description = st.text_area("Description", "Towering desert brute caked in crimson dust and dried blood...")
 
 # MP Budget from level
-mp_budget = round(level / 0.6) + 28
+mp_budget = level + 64
 
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
