@@ -1,5 +1,6 @@
 import streamlit as st
 import re
+import statistics
 
 # --- Helper Functions ---
 def extract_wr(weapon_str):
@@ -17,7 +18,7 @@ st.title("Fiendish Fate Monster Builder")
 # --- Monster Basics ---
 st.header("Monster Basics")
 name = st.text_input("Monster Name", "Unnamed Monster")
-level = st.slider("Level", 1, 100, 10)
+level = st.number_input("Level", 1, 100, 10)
 creature_type = st.selectbox("Creature Type", [
     "Abyssal", "Beast", "Beast (Magical)", "Construct", "Dissonant", "Dragon",
     "Elemental", "Empyrean", "Humanoid", "Humanoid (Fae)", "Humanoid (Giant)",
@@ -86,10 +87,15 @@ for i in range(1, 4):
     with col2:
         base_wr = st.number_input(f"WR {i}", 0, 40, 10)
     with col3:
-        dtype = st.selectbox(f"Type {i}", ["A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"type_{i}")
+        dtype = st.selectbox(f"Damage Type {i}", ["", "A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"type_{i}")
     final_wr = base_wr + str_mod
     wr_values.append(base_wr)  # use base WR, not modified
-    weapons.append(f"{wname}, WR {final_wr} ({dtype})")
+    # Only add to the weapons list if the name is not blank
+    if wname.strip():
+        weapons.append(f"{wname}, WR {final_wr} ({dtype})")
+ #   weapons.append(f"{wname}, WR {final_wr} ({dtype})")
+
+
 
 # --- DV Breakdown ---
 st.subheader("Armor (DV)")
@@ -103,8 +109,13 @@ for i, k in enumerate(dv_types):
 dv_line = " | ".join([f"{k} {dv_value}" for k, dv_value in dv_input.items()])
 
 # Calculate average DV
-average_dv = sum(dv_input.values()) / len(dv_input) - grit if dv_input else 0
-st.text(f"Average DV: {average_dv:.2f}")
+#average_dv = sum(dv_input.values()) / len(dv_input) - grit if dv_input else 0
+#st.text(f"Average DV: {average_dv:.2f}")
+
+# Calculate median DV
+dv_values = [v - grit for v in dv_input.values()] if dv_input else []
+median_dv = statistics.median(dv_values) if dv_values else 0
+st.text(f"Median DV: {median_dv:.2f}")
 
 # --- Skills ---
 st.subheader("Skills (max 85)")
@@ -122,44 +133,46 @@ for i, s in enumerate(skill_list):
 # --- Specials ---
 #st.subheader("Specials")
 specials_table = {
-    "Breath Weapon": {"mp": 8, "ap": 2, "cost": "EP 14", "desc": "Exhales elemental energy in a cone or area."},
-    "Disease": {"mp": 3, "ap": 2, "cost": "FP 12", "desc": "Inflicts a disease; select once per potential target."},
-    "Essence Drain": {"mp": 4, "ap": 2, "cost": "EP 10", "desc": "Drains attributes, essence, or levels."},
-    "Essence Stealing": {"mp": 8, "ap": 2, "cost": "EP 14", "desc": "Drains and absorbs traits from targets."},
-    "Extra Damaging": {"mp": 6, "ap": 0, "cost": "—", "desc": "Deals +1d6 damage (up to 4d6)."},
-    "Fast Healing": {"mp": 3, "ap": 0, "cost": "—", "desc": "Heals +1d6 damage per round, max 4d6."},
-    "Fear Aura": {"mp": 4, "ap": 0, "cost": "—", "desc": "Aura instills fear; passive unless suppressed."},
-    "Fly": {"mp": 5, "ap": 1, "cost": "FP 6", "desc": "Creature can fly."},
-    "Gaze, Charm": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Charms target(s); select per potential target."},
-    "Gaze, Death": {"mp": 12, "ap": 3, "cost": "FP 24", "desc": "Kills on sight; select per potential target."},
-    "Gaze, Fear": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Inflicts fear; select per potential target."},
-    "Gaze, Paralysis": {"mp": 8, "ap": 2, "cost": "FP 12", "desc": "Paralyzes target(s); scalable."},
-    "Gaze, Petrification": {"mp": 10, "ap": 3, "cost": "FP 20", "desc": "Turns target(s) to stone; scalable."},
-    "Gaze, Sleep": {"mp": 6, "ap": 3, "cost": "FP 8", "desc": "Puts target(s) to sleep."},
-    "Immunity": {"mp": 16, "ap": 0, "cost": "—", "desc": "Immunity to one damage type."},
-    "Invisibility": {"mp": 6, "ap": 3, "cost": "FP 2", "desc": "Turns invisible at will."},
-    "Melee AoE": {"mp": 8, "ap": 2, "cost": "FP 10", "desc": "AoE melee strikes, scalable by WR/AoE."},
-    "Phase": {"mp": 4, "ap": 1, "cost": "FP 8", "desc": "Walk through solid matter for 1d6 rounds."},
-    "Plane Shift": {"mp": 8, "ap": 2, "cost": "FP 16", "desc": "Shifts between planes."},
-    "Poison, Damage": {"mp": 5, "ap": 0, "cost": "—", "desc": "Deals +1d6 poison damage; stackable."},
-    "Poison, Death": {"mp": 12, "ap": 1, "cost": "FP 24", "desc": "Deadly poison."},
-    "Poison, Paralysis": {"mp": 8, "ap": 1, "cost": "FP 12", "desc": "Paralyzing poison."},
-    "Poison, Petrification": {"mp": 10, "ap": 1, "cost": "FP 16", "desc": "Petrifying poison."},
-    "Ray, Charm": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Charm via magical ray."},
-    "Ray, Death": {"mp": 12, "ap": 3, "cost": "FP 24", "desc": "Deadly ray attack."},
-    "Ray, Fear": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Fear ray."},
-    "Ray, Paralysis": {"mp": 8, "ap": 2, "cost": "FP 12", "desc": "Paralysis ray."},
-    "Ray, Petrification": {"mp": 10, "ap": 3, "cost": "FP 20", "desc": "Turns target(s) to stone."},
-    "Ray, Polymorph": {"mp": 8, "ap": 3, "cost": "FP 14", "desc": "Polymorphs target(s)."},
-    "Ray, Sleep": {"mp": 6, "ap": 3, "cost": "FP 8", "desc": "Induces magical sleep."},
-    "Reduced Damage": {"mp": 2, "ap": 0, "cost": "—", "desc": "Reduces incoming damage by 1d6."},
-    "Regeneration": {"mp": 12, "ap": 3, "cost": "FP 24", "desc": "Limb or body regrowth over time."},
-    "Resistances": {"mp": 8, "ap": 0, "cost": "—", "desc": "Half damage from one damage type."},
-    "Shape Shift": {"mp": 6, "ap": 3, "cost": "FP 14", "desc": "Transform into another form."},
-    "Summon": {"mp": 3, "ap": 3, "cost": "FP 11", "desc": "Summon 1d4 creatures for 1d6 rounds."},
-    "Swallow Whole": {"mp": 10, "ap": 2, "cost": "FP 10", "desc": "Swallows target on failed defense."},
-    "Teleport": {"mp": 6, "ap": 3, "cost": "FP 8", "desc": "Teleport to another location."},
-    "Trample": {"mp": 4, "ap": 1, "cost": "FP 5", "desc": "Charge attack that knocks down."}
+    # Core Effects
+    "Aura": {"mp": 2, "ap": 0, "cost": "—", "desc": "Aura that grants a modifier or applies a magical effect (e.g., fear (4), charm (6), polymorph (6), sleep (6), paralysis (8), petrification (10),death (12)). Adjust MP by severity; modifiers +/-2 per 2 MP; max MP 12."},
+    "Breath Weapon": {"mp": 8, "ap": 2, "cost": "FP 14", "desc": "Exhales energy in a cone. Increase FP cost for larger affected areas."},
+    "Burrow": {"mp": 3, "ap": 1, "cost": "FP 4", "desc": "Can tunnel through terrain."},
+    "Corpse Explosion": {"mp": 10, "ap": 3, "cost": "EP 16", "desc": "Detonates a corpse for AoE damage."},
+    "Disease": {"mp": 3, "ap": 2, "cost": "FP 10", "desc": "Inflicts a disease. Multiply MP by number of targets."},
+    "Entangle": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Restrains or slows enemies with webbing, tendrils, or other physical means."},
+    "Essence Drain": {"mp": 4, "ap": 2, "cost": "EP 8", "desc": "Drains target's attributes, EP, FP, HP, or levels."},
+    "Essence Stealing": {"mp": 8, "ap": 2, "cost": "EP 10", "desc": "Absorbs EP, FP, or HP from targets."},
+    "Exploding Corpse": {"mp": 10, "ap": 0, "cost": "—", "desc": "The creatures corpse explodes in an AoE upon its death."},
+    "Extra Damaging": {"mp": 4, "ap": 0, "cost": "—", "desc": "Deals +1D6 bonus damage. Set MP to 4 × number of dice; maximum 4D6."},
+    "Fast Healing": {"mp": 4, "ap": 0, "cost": "—", "desc": "Regenerates 1D6 HP per round (up to 4D6). MP = 4 × number of dice."},
+    "Fear Aura": {"mp": 4, "ap": 0, "cost": "—", "desc": "Passive aura causes fear; can be suppressed."},
+    "Fly": {"mp": 4, "ap": 1, "cost": "FP 6", "desc": "Can fly or levitate."},
+    "Gaze Attack": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Line-of-sight effect (e.g., fear (4), charm (6), polymorph (6), sleep (6), paralysis (8), petrification (10),death (12)). Adjust MP by severity and multiply by targets affected."},
+    "Grasping Shadows": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Shadows grapple or slow creatures nearby."},
+    "Haste": {"mp": 8, "ap": 2, "cost": "EP 14", "desc": "Grants target 1 AP for SR 3 rounds. Adjust EP for addtional duration and multiply MP by targets affected."},
+    "Immunity": {"mp": 12, "ap": 0, "cost": "—", "desc": "Immune to one damage type completely. Set MP to 12 x number of immunities."},
+    "Invisibility": {"mp": 6, "ap": 3, "cost": "FP 2", "desc": "Turns invisible."},
+    "Magical Absorption": {"mp": 8, "ap": 2, "cost": "EP 14", "desc": "Absorbs magic, converting it to EP or FP."},
+    "Melee AoE": {"mp": 8, "ap": 2, "cost": "FP 10", "desc": "Wide melee strike, scalable by WR or number of targets. Increase FP cost for larger affected areas."},
+    "Mind Shatter": {"mp": 9, "ap": 2, "cost": "EP 12", "desc": "Causes psychic disruption: stun, fear, or disorientation."},
+    "Phase": {"mp": 4, "ap": 1, "cost": "EP 8", "desc": "Walks through matter for SR 3 rounds."},
+    "Plane Shift": {"mp": 8, "ap": 2, "cost": "EP 16", "desc": "Shifts to another plane of existence."},
+    "Poison Effect": {"mp": 4, "ap": 1, "cost": "—", "desc": "Inflicts poison. Effect can be weakening (3), damage (4), paralysis (8), petrification (10), or death (12). Adjust MP by severity."},
+    "Ray Attack": {"mp": 6, "ap": 2, "cost": "FP 8", "desc": "Magical beam causing fear (4), charm (6), polymorph (6), sleep (6), paralysis (8), petrification (10),death (12), etc. Adjust MP by severity and multiply by targets affected."},
+    "Reduced Damage": {"mp": 2, "ap": 0, "cost": "FP 8", "desc": "Increases all DV by 2 for SR 3 rounds. Rule of thumb +1 DV per 1 MP; max MP 10."},
+    "Regeneration": {"mp": 12, "ap": 3, "cost": "FP 24", "desc": "Regrows lost limbs or body over time."},
+    "Resistances": {"mp": 6, "ap": 0, "cost": "—", "desc": "Takes half damage from one damage type. Set MP to 6 x number of resistances."},
+    "Shape Shift": {"mp": 10, "ap": 3, "cost": "FP 20", "desc": "Transforms into a different form."},
+    "Shatter Weapon": {"mp": 5, "ap": 2, "cost": "FP 10", "desc": "Destroys a mundane weapon on a successful parry."},
+    "Slime Trail": {"mp": 3, "ap": 0, "cost": "—", "desc": "Leaves difficult or damaging terrain behind."},
+    "Slow": {"mp": 8, "ap": 2, "cost": "EP 14", "desc": "Lowers targets AP by 1 for SR 3 rounds. Adjust EP for addtional duration and multiply MP by targets affected."},
+    "Spell Reflection": {"mp": 8, "ap": 0, "cost": "EP 16", "desc": "Reflects a spell back at caster once per round."},
+    "Swallow Whole": {"mp": 10, "ap": 2, "cost": "FP 10", "desc": "Swallows target on successful attack if targer failed defense check."},
+    "Summon": {"mp": 6, "ap": 3, "cost": "EP 12", "desc": "Summon 1D3 + 1 creatures for SR 3 rounds. Increase MP for stronger summons."},
+    "Teleport": {"mp": 6, "ap": 3, "cost": "EP 8", "desc": "Teleport to another visible or known location on same plane."},
+    "Trample": {"mp": 4, "ap": 1, "cost": "FP 5", "desc": "Charge that knocks down enemies."},
+    "Volatile Blood": {"mp": 6, "ap": 0, "cost": "—", "category": "Utility",
+        "desc": "Damage from a melee attacks or bleeds cause the creature’s blood to react violently, splashing corrosive ichor, igniting sparks, or releasing noxious fumes. Attacker must succeed a Dodge check or take applicable damaged."}
 }
 
 st.subheader("Special Abilities")
@@ -180,31 +193,57 @@ for i in range(1, 11):
             custom_name = st.text_input(f"Custom Name {i}", "", key=f"custom_name_{i}")
             desc = st.text_input(f"Custom Desc {i}", "", key=f"custom_desc_{i}")
             ap = st.number_input(f"Custom AP {i}", 0, 10, 0, key=f"custom_ap_{i}")
+            action_type = st.selectbox(f"Action Type {i}", ["Interrupt","On-Turn", "Passive"], key=f"acttype_{i}")
             ep = st.number_input(f"Custom EP {i}", 0, 100, 0, key=f"custom_ep_{i}")
             fp = st.number_input(f"Custom FP {i}", 0, 100, 0, key=f"custom_fp_{i}")
             mp = st.number_input(f"Custom MP {i}", 0, 50, 0, key=f"custom_mp_{i}")
+            wrs = st.number_input(f"Custom WR {i}", 0, 40, 0, key=f"custom_wrs_{i}")
+            wr_type = st.selectbox(f"Damage Type {i}", ["","A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"wtype_{i}")
             if desc:
                 display_name = custom_name if custom_name else "Custom Ability"
                 cost_string = []
                 if ap: cost_string.append(f"AP {ap}")
+                if action_type: cost_string.append(f"{action_type}")
                 if ep: cost_string.append(f"EP {ep}")
                 if fp: cost_string.append(f"FP {fp}")
+                if wrs: cost_string.append(f"WR {wrs} ({wr_type})")
                 cost_str = ", ".join(cost_string) if cost_string else "—"
-                specials.append(f"- {display_name}: {desc} [{cost_str}]")
+                specials.append(f"- {display_name} [{cost_str}]: {desc}")
                 special_mp_total += mp
         elif choice != "None":
-          info = specials_table[choice]
-          custom_name = st.text_input(f"Name override for {choice}", choice, key=f"custom_named_{i}")
-          custom_desc = st.text_area(f"Description override for {choice}", info['desc'], key=f"custom_desc_{i}")
-          label = f"- {custom_name}: {custom_desc} [AP {info['ap']}, {info['cost']}]"
-          specials.append(label)
-          special_mp_total += info["mp"]
+            info = specials_table[choice]
 
-#specials = []
-#for i in range(1, 4):
-#    sp = st.text_area(f"Special {i}", "")
-#    if sp.strip():
-#        specials.append(f"- {sp.strip()}")
+            # Default values parsed from table entry
+            default_ap = info.get("ap", 0)
+            default_ep = int(info.get("cost").split("EP ")[1]) if "EP " in info.get("cost", "") else 0
+            default_fp = int(info.get("cost").split("FP ")[1]) if "FP " in info.get("cost", "") else 0
+            default_action_type = "On-Turn"  # Default guess — you can tweak or add logic if needed
+            default_wr = 0
+            default_wr_type = ""
+
+            # Editable fields for overrides
+            custom_name = st.text_input(f"Name override for {choice}", choice, key=f"custom_named_{i}")
+            custom_desc = st.text_area(f"Description override for {choice}", info['desc'], key=f"custom_desc_{i}")
+            ap = st.number_input(f"Override AP {i}", 0, 10, default_ap, key=f"custom_ap_{i}")
+            action_type = st.selectbox(f"Action Type {i}", ["Interrupt", "On-Turn", "Passive"], index=1, key=f"acttype_{i}")
+            ep = st.number_input(f"Override EP {i}", 0, 100, default_ep, key=f"custom_ep_{i}")
+            fp = st.number_input(f"Override FP {i}", 0, 100, default_fp, key=f"custom_fp_{i}")
+            wrs = st.number_input(f"Override WR {i}", 0, 40, default_wr, key=f"custom_wrs_{i}")
+            wr_type = st.selectbox(f"Damage Type {i}", ["", "A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"wtype_{i}")
+
+            # Construct label and cost string like the custom version
+            display_name = custom_name if custom_name else choice
+            cost_string = []
+            if ap: cost_string.append(f"AP {ap}")
+            if action_type: cost_string.append(f"{action_type}")
+            if ep: cost_string.append(f"EP {ep}")
+            if fp: cost_string.append(f"FP {fp}")
+            if wrs: cost_string.append(f"WR {wrs} ({wr_type})")
+            cost_str = ", ".join(cost_string) if cost_string else "—"
+
+            specials.append(f"- {display_name} [{cost_str}]: {custom_desc}")
+            special_mp_total += info["mp"]
+
 
 # --- Flavor and Treasure ---
 st.header("Flavor & Treasure")
@@ -213,17 +252,17 @@ lair_treasure = st.text_input("Lair Treasure", "Common treasure table.")
 description = st.text_area("Description", "Towering desert brute caked in crimson dust and dried blood...")
 
 # MP Budget from level
-mp_budget = level + 64
+mp_budget = level + 50
 
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
     # Size MP Cost
-    size_mp_table = {
-        "Diminutive": 1, "Tiny": 2, "Small": 4, "Medium": 6, "Large": 8,
-        "Huge": 10, "Gigantic": 12, "Colossal": 14
-    }
-    mp_size = size_mp_table.get(size, 0)
-    st.text(f"Size Cost: {mp_size}")
+ #   size_mp_table = {
+ #       "Diminutive": 1, "Tiny": 2, "Small": 4, "Medium": 6, "Large": 8,
+ #       "Huge": 10, "Gigantic": 12, "Colossal": 14
+ #   }
+ #   mp_size = size_mp_table.get(size, 0)
+ #   st.text(f"Size Cost: {mp_size}")
   
   # Attribute MP (based on actual base scores)
     attribute_mp_table = {
@@ -237,13 +276,13 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Attribute Cost: {mp_attributes}")
 
     # Vitals MP Cost
-    mp_hp = hpv / 3
+    mp_hp = hpv / 5
     st.text(f"HP Cost: {mp_hp}")
   
-    mp_fp = fpv / 8
+    mp_fp = fpv / 10
     st.text(f"FP Cost: {mp_fp}")  
   
-    mp_ep = epv / 8
+    mp_ep = epv / 10
     st.text(f"EP Cost: {mp_ep}")  
   
     # AP MP Cost
@@ -256,7 +295,9 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Weapon Cost: {mp_weapons}")
 
     # DV MP Cost
-    mp_dv = average_dv * 2.8
+#    mp_dv = average_dv * 2
+    mp_dv = median_dv * 2.5
+    
     st.text(f"DV Cost: {mp_dv}")
   
     # Skills MP Cost
@@ -278,7 +319,7 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Specials Cost: {special_mp_total}")
 
 # Total MP used
-total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+total_mp_used = round(mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
 if total_mp_used > mp_budget:
     color = "red"
 elif total_mp_used < mp_budget - 5:
@@ -292,7 +333,7 @@ st.markdown(
 )
 
 if total_mp_used > mp_budget:
-    st.error(f"Over MP Budget by {total_mp_used - mp_budget:.2f}!")
+    st.error(f"Over MP Budget by {total_mp_used - mp_budget:.2f}! Monster may be overpowered")
 elif total_mp_used < mp_budget - 5:
     st.warning(f"MP Budget underused by {mp_budget - total_mp_used:.2f}. Monster may be underpowered.")
 else:
@@ -327,7 +368,7 @@ Specials:
 Carried Treasure: {carried_treasure}
 Lair Treasure: {lair_treasure}
 Description: {description}
-
 XP: {monster_xp:,}
 """
 st.text_area("Formatted Stat Block", statblock, height=400)
+
