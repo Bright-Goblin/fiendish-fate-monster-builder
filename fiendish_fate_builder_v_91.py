@@ -213,25 +213,22 @@ for i in range(1, 11):
         elif choice != "None":
             info = specials_table[choice]
 
-            # Default values parsed from table entry
             default_ap = info.get("ap", 0)
             default_ep = int(info.get("cost").split("EP ")[1]) if "EP " in info.get("cost", "") else 0
             default_fp = int(info.get("cost").split("FP ")[1]) if "FP " in info.get("cost", "") else 0
-            default_action_type = "On-Turn"  # Default guess — you can tweak or add logic if needed
-            default_wr = 0
-            default_wr_type = ""
+            default_desc = info.get("desc", "")
+            default_mp = info.get("mp", 0)
 
-            # Editable fields for overrides
             custom_name = st.text_input(f"Name override for {choice}", choice, key=f"custom_named_{i}")
-            custom_desc = st.text_area(f"Description override for {choice}", info['desc'], key=f"custom_desc_{i}")
+            custom_desc = st.text_area(f"Description override for {choice}", default_desc, key=f"custom_desc_{i}")
             ap = st.number_input(f"Override AP {i}", 0, 10, default_ap, key=f"custom_ap_{i}")
             action_type = st.selectbox(f"Action Type {i}", ["Interrupt", "On-Turn", "Passive"], index=1, key=f"acttype_{i}")
             ep = st.number_input(f"Override EP {i}", 0, 100, default_ep, key=f"custom_ep_{i}")
             fp = st.number_input(f"Override FP {i}", 0, 100, default_fp, key=f"custom_fp_{i}")
-            wrs = st.number_input(f"Override WR {i}", 0, 40, default_wr, key=f"custom_wrs_{i}")
+            mp = st.number_input(f"Override MP {i}", 0, 100, default_mp, key=f"custom_mp_{i}")
+            wrs = st.number_input(f"Override WR {i}", 0, 40, 0, key=f"custom_wrs_{i}")
             wr_type = st.selectbox(f"Damage Type {i}", ["", "A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"wtype_{i}")
 
-            # Construct label and cost string like the custom version
             display_name = custom_name if custom_name else choice
             cost_string = []
             if ap: cost_string.append(f"AP {ap}")
@@ -242,8 +239,7 @@ for i in range(1, 11):
             cost_str = ", ".join(cost_string) if cost_string else "—"
 
             specials.append(f"- {display_name} [{cost_str}]: {custom_desc}")
-            special_mp_total += info["mp"]
-
+            special_mp_total += mp
 
 # --- Flavor and Treasure ---
 st.header("Flavor & Treasure")
@@ -371,4 +367,3 @@ Description: {description}
 XP: {monster_xp:,}
 """
 st.text_area("Formatted Stat Block", statblock, height=400)
-
