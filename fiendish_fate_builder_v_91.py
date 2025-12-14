@@ -114,8 +114,10 @@ dv_line = " | ".join([f"{k} {dv_value}" for k, dv_value in dv_input.items()])
 
 # Calculate median DV
 dv_values = [v - grit for v in dv_input.values()] if dv_input else []
-median_dv = statistics.median(dv_values) if dv_values else 0
-st.text(f"Median DV: {median_dv:.2f}")
+#median_dv = statistics.median(dv_values) if dv_values else 0
+#st.text(f"Median DV: {median_dv:.2f}")
+average_dv = sum(dv_values()) / len(dv_input) if dv_values else 0
+st.text(f"Average DV: {average_dv:.2f}")
 
 # --- Skills ---
 st.subheader("Skills (max 85)")
@@ -253,12 +255,12 @@ mp_budget = level + 50
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
     # Size MP Cost
- #   size_mp_table = {
- #       "Diminutive": 1, "Tiny": 2, "Small": 4, "Medium": 6, "Large": 8,
- #       "Huge": 10, "Gigantic": 12, "Colossal": 14
- #   }
- #   mp_size = size_mp_table.get(size, 0)
- #   st.text(f"Size Cost: {mp_size}")
+    size_mp_table = {
+        "Diminutive": 0, "Tiny": 1, "Small": 2, "Medium": 4, "Large": 6,
+        "Huge": 8, "Gigantic": 10, "Colossal": 12
+    }
+    mp_size = size_mp_table.get(size, 0)
+    st.text(f"Size Cost: {mp_size}")
   
   # Attribute MP (based on actual base scores)
     attribute_mp_table = {
@@ -291,8 +293,8 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Weapon Cost: {mp_weapons}")
 
     # DV MP Cost
-#    mp_dv = average_dv * 2
-    mp_dv = median_dv * 2.5
+    mp_dv = average_dv * 2.8
+#    mp_dv = median_dv * 2.5
     
     st.text(f"DV Cost: {mp_dv}")
   
@@ -315,7 +317,7 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Specials Cost: {special_mp_total}")
 
 # Total MP used
-total_mp_used = round(mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
 if total_mp_used > mp_budget:
     color = "red"
 elif total_mp_used < mp_budget - 5:
