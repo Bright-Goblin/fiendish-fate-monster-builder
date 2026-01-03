@@ -41,28 +41,28 @@ move = st.number_input("Movement", 0, 100, default_move) if override_movement el
 initiative = st.number_input("Initiative", 0, 100, 6)
 
 # --- Attributes ---
-st.header("Attributes")
-col_a1, col_a2, col_a3, col_a4 = st.columns(4)
-with col_a1:
-    str_score = st.number_input("STR", 1, 40, 10)
-    int_score = st.number_input("INT", 1, 40, 10)
-with col_a2:
-    dex_score = st.number_input("DEX", 1, 40, 10)
-    con_score = st.number_input("CON", 1, 40, 10)
-with col_a3:
-    pow_score = st.number_input("POW", 1, 40, 10)
-    cha_score = st.number_input("CHA", 1, 40, 10)
-with col_a4:
-    tou_score = st.number_input("TOU", 1, 40, 10)
+# st.header("Attributes")
+# col_a1, col_a2, col_a3, col_a4 = st.columns(4)
+# with col_a1:
+#    str_score = st.number_input("STR", 1, 40, 10)
+#    int_score = st.number_input("INT", 1, 40, 10)
+# with col_a2:
+#    dex_score = st.number_input("DEX", 1, 40, 10)
+#    con_score = st.number_input("CON", 1, 40, 10)
+# with col_a3:
+#    pow_score = st.number_input("POW", 1, 40, 10)
+#    cha_score = st.number_input("CHA", 1, 40, 10)
+# with col_a4:
+#    tou_score = st.number_input("TOU", 1, 40, 10)
 
-str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
-int_mod = get_mod(int_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
-dex_mod = get_mod(dex_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
-con_mod = get_mod(con_score, [-5, -4, -3, -2, -1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 1)
-pow_mod = get_mod(pow_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
-cha_mod = get_mod(cha_score, [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
-resilience = get_mod(tou_score, list(range(6, 26)), 1)
-grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+#str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+#int_mod = get_mod(int_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+#dex_mod = get_mod(dex_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+#con_mod = get_mod(con_score, [-5, -4, -3, -2, -1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 1)
+#pow_mod = get_mod(pow_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+#cha_mod = get_mod(cha_score, [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+#resilience = get_mod(tou_score, list(range(6, 26)), 1)
+#grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 
 # --- Vitals ---
 st.subheader("Vitals")
@@ -88,7 +88,8 @@ for i in range(1, 4):
         base_wr = st.number_input(f"WR {i}", 0, 40, 10)
     with col3:
         dtype = st.selectbox(f"Damage Type {i}", ["", "A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"type_{i}")
-    final_wr = base_wr + str_mod
+    #final_wr = base_wr + str_mod
+    final_wr = base_wr
     wr_values.append(base_wr)  # use base WR, not modified
     # Only add to the weapons list if the name is not blank
     if wname.strip():
@@ -105,7 +106,8 @@ dv_rows = [st.columns(5), st.columns(5)]
 for i, k in enumerate(dv_types):
     with dv_rows[i // 5][i % 5]:
         base_val = st.number_input(f"{k}", 0, 35, 5, key=f"dv_{k}")
-        dv_input[k] = base_val + grit
+        #dv_input[k] = base_val + grit
+        dv_input[k] = base_val
 dv_line = " | ".join([f"{k} {dv_value}" for k, dv_value in dv_input.items()])
 
 # Calculate average DV
@@ -120,9 +122,9 @@ st.text(f"Average DV: {average_dv:.2f}")
 # --- Skills ---
 st.subheader("Skills (max 85)")
 skill_list = [
-    "Acrobatics", "Athletics", "Ballistics", "Cast Spells", "Countervail",
-    "Dodge", "IW", "Parry", "Perception", "Rune Casting",
-    "Stealth", "Throw", "Unarmed", "Vigor", "Weaponry"
+    "ACR", "ATH", "BAL", "CS", "CTV",
+    "DG", "IW", "PRY", "PER", "RC",
+    "STL", "THR", "UA", "VIG", "WPN"
 ]
 skills = {}
 skill_cols = st.columns(3)
@@ -261,15 +263,15 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Size Cost: {mp_size}")
   
   # Attribute MP (based on actual base scores)
-    attribute_mp_table = {
-        1: -1.25, 2: -1, 3: -0.75, 4: -0.5, 5: -0.25, 6: 0, 7: 0, 8: 0, 9: 0.2, 10: 0.2,
-        11: 0.3, 12: 0.3, 13: 0.4, 14: 0.4, 15: 0.6, 16: 0.6, 17: 0.8, 18: 0.8, 19: 1, 20: 1,
-        21: 4, 22: 4, 23: 7, 24: 7, 25: 10, 26: 10, 27: 13, 28: 13, 29: 16, 30: 16,
-        31: 19, 32: 19, 33: 22, 34: 22, 35: 25, 36: 25, 37: 28, 38: 28, 39: 31, 40: 31
-    }
-    attribute_scores = [str_score, int_score, dex_score, con_score, cha_score, pow_score, tou_score]
-    mp_attributes = sum(attribute_mp_table.get(score, 0) for score in attribute_scores)
-    st.text(f"Attribute Cost: {mp_attributes}")
+  #  attribute_mp_table = {
+  #      1: -1.25, 2: -1, 3: -0.75, 4: -0.5, 5: -0.25, 6: 0, 7: 0, 8: 0, 9: 0.2, 10: 0.2,
+  #      11: 0.3, 12: 0.3, 13: 0.4, 14: 0.4, 15: 0.6, 16: 0.6, 17: 0.8, 18: 0.8, 19: 1, 20: 1,
+  #      21: 4, 22: 4, 23: 7, 24: 7, 25: 10, 26: 10, 27: 13, 28: 13, 29: 16, 30: 16,
+  #      31: 19, 32: 19, 33: 22, 34: 22, 35: 25, 36: 25, 37: 28, 38: 28, 39: 31, 40: 31
+  #  }
+  #  attribute_scores = [str_score, int_score, dex_score, con_score, cha_score, pow_score, tou_score]
+  #  mp_attributes = sum(attribute_mp_table.get(score, 0) for score in attribute_scores)
+  #  st.text(f"Attribute Cost: {mp_attributes}")
 
     # Vitals MP Cost
     mp_hp = hpv / 5
@@ -315,7 +317,8 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"Specials Cost: {special_mp_total}")
 
 # Total MP used
-total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+# total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+total_mp_used = round(mp_size + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
 if total_mp_used > mp_budget:
     color = "red"
 elif total_mp_used < mp_budget - 5:
@@ -336,24 +339,25 @@ else:
     st.success("MP Budget is balanced.")
 
 # --- XP Lookup Table ---
-xp_table = {
-    1: 17, 2: 24, 3: 33, 4: 42, 5: 51, 6: 60, 7: 69, 8: 78, 9: 89, 10: 100,
-    11: 113, 12: 128, 13: 145, 14: 164, 15: 185, 16: 210, 17: 239, 18: 272, 19: 311, 20: 358,
-    21: 413, 22: 478, 23: 555, 24: 646, 25: 755, 26: 884, 27: 1037, 28: 1220, 29: 1439, 30: 1700,
-    31: 2013, 32: 2388, 33: 2837, 34: 3374, 35: 4017, 36: 4788, 37: 5713, 38: 6822, 39: 8151, 40: 9746,
-    41: 11351, 42: 12956, 43: 14561, 44: 16166, 45: 17771, 46: 19376, 47: 20981, 48: 22586, 49: 24191, 50: 25796,
-    51: 27401, 52: 29006, 53: 30611, 54: 32216, 55: 33821, 56: 35426, 57: 37031, 58: 38636, 59: 40241, 60: 41846,
-    61: 43451, 62: 45056, 63: 46661, 64: 48266, 65: 49871, 66: 51476, 67: 53081, 68: 54686, 69: 56291, 70: 57896,
-    71: 59501, 72: 61106, 73: 62711, 74: 64316, 75: 65921, 76: 67526, 77: 69131, 78: 70736, 79: 72341, 80: 73946,
-    81: 75551, 82: 77156, 83: 78761, 84: 80366, 85: 81971, 86: 83576, 87: 85181, 88: 86786, 89: 88391, 90: 89996,
-    91: 91601, 92: 93206, 93: 94811, 94: 96416, 95: 98021, 96: 99626, 97: 101231, 98: 102836, 99: 104441, 100: 106046
-}
-monster_xp = xp_table.get(level, 0)
+#xp_table = {
+#    1: 20, 2: 40, 3: 60, 4: 80, 5: 100, 6: 120, 7: 140, 8: 160, 9: 180, 10: 200,
+#    11: 220, 12: 240, 13: 260, 14: 280, 15: 300, 16: 320, 17: 340, 18: 360, 19: 380, 20: 400,
+#    21: 420, 22: 440, 23: 460, 24: 480, 25: 500, 26: 520, 27: 540, 28: 560, 29: 580, 30: 600,
+#    31: 620, 32: 640, 33: 660, 34: 680, 35: 700, 36: 720, 37: 740, 38: 760, 39: 780, 40: 800,
+#    41: 820, 42: 840, 43: 860, 44: 880, 45: 900, 46: 920, 47: 940, 48: 960, 49: 980, 50: 1000,
+#    51: 1020, 52: 1040, 53: 1060, 54: 1080, 55: 1100, 56: 1120, 57: 1140, 58: 1160, 59: 1180, 60: 1200,
+#    61: 1220, 62: 1240, 63: 1260, 64: 1280, 65: 1300, 66: 1320, 67: 1340, 68: 1360, 69: 1380, 70: 1400,
+#    71: 1420, 72: 1440, 73: 1460, 74: 1480, 75: 1500, 76: 1520, 77: 1540, 78: 1560, 79: 1580, 80: 1600,
+#    81: 1620, 82: 1640, 83: 1660, 84: 1680, 85: 1700, 86: 1720, 87: 1740, 88: 1760, 89: 1780, 90: 1800,
+#    91: 1820, 92: 1840, 93: 1860, 94: 1880, 95: 1900, 96: 1920, 97: 1940, 98: 1960, 99: 1980, 100: 2000
+#}
+#monster_xp = xp_table.get(level, 0)
+monster_xp = 20 * level
 
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
 statblock = f"""{name.upper()} (L{level} {creature_type.upper()})
-STR {str_score} ({str_mod}) | INT {int_score} ({int_mod}) | DEX {dex_score} ({dex_mod}) | CON {con_score} ({con_mod}) | POW {pow_score} ({pow_mod}) | CHA {cha_score} ({cha_mod}) | TOU {tou_score} ({resilience} / {grit})
+# STR {str_score} ({str_mod}) | INT {int_score} ({int_mod}) | DEX {dex_score} ({dex_mod}) | CON {con_score} ({con_mod}) | POW {pow_score} ({pow_mod}) | CHA {cha_score} ({cha_mod}) | TOU {tou_score} ({resilience} / {grit})
 AP {apv} | Move {move} | Initiative {initiative} | Size {size}
 HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
