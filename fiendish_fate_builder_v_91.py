@@ -247,8 +247,7 @@ for i in range(1, 11):
 
 # --- Flavor and Treasure ---
 st.header("Flavor & Treasure")
-carried_treasure = st.text_input("Carried Treasure", "3D6 x 10 gold, or 1D4 bone charms.")
-lair_treasure = st.text_input("Lair Treasure", "Common treasure table.")
+carried_treasure = st.selectbox("Treasure Table", ["Poor", "Common", "Uncommon", "Rare", "Legendary"]))
 description = st.text_area("Description", "Towering desert brute caked in crimson dust and dried blood...")
 
 # MP Budget from level
@@ -359,7 +358,6 @@ monster_xp = 20 * level
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
 statblock = f"""{name.upper()} (L{level} {creature_type.upper()})
-#STR {str_score} ({str_mod}) | INT {int_score} ({int_mod}) | DEX {dex_score} ({dex_mod}) | CON {con_score} ({con_mod}) | POW {pow_score} ({pow_mod}) | CHA {cha_score} ({cha_mod}) | TOU {tou_score} ({resilience} / {grit})
 AP {apv} | Move {move} | Initiative {initiative} | Size {size}
 HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
@@ -367,9 +365,8 @@ Attack: {" | ".join(weapons)}
 Skills: {" | ".join(f"{k} {v}" for k, v in skills.items())}
 Specials:
 {chr(10).join(specials)}
-Carried Treasure: {carried_treasure}
-Lair Treasure: {lair_treasure}
 Description: {description}
+Treasure Table: {carried_treasure}
 XP: {monster_xp:,}
 """
 st.text_area("Formatted Stat Block", statblock, height=400)
