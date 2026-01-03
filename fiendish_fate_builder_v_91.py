@@ -18,7 +18,7 @@ st.title("Fiendish Fate Monster Builder")
 # --- Monster Basics ---
 st.header("Monster Basics")
 name = st.text_input("Monster Name", "Unnamed Monster")
-level = st.number_input("Level", 1, 100, 10)
+level = st.number_input("Level", 1, 200, 10)
 creature_type = st.selectbox("Creature Type", [
     "Abyssal", "Beast", "Beast (Magical)", "Construct", "Dissonant", "Dragon",
     "Elemental", "Empyrean", "Humanoid", "Humanoid (Fae)", "Humanoid (Giant)",
