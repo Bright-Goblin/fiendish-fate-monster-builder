@@ -247,7 +247,7 @@ for i in range(1, 11):
 
 # --- Flavor and Treasure ---
 st.header("Flavor & Treasure")
-carried_treasure = st.selectbox("Treasure Table", ["Poor", "Common", "Uncommon", "Rare", "Legendary"]))
+carried_treasure = st.selectbox("Treasure Table", ["Poor", "Common", "Uncommon", "Rare", "Legendary"])
 description = st.text_area("Description", "Towering desert brute caked in crimson dust and dried blood...")
 
 # MP Budget from level
