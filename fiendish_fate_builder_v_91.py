@@ -43,7 +43,6 @@ initiative = st.number_input("Initiative", 0, 100, 6)
 # --- Attributes ---
 st.header("Attributes")
 # col_a1, col_a2, col_a3, col_a4 = st.columns(4)
-col_a1 = st.columns(1)
 # with col_a1:
 #    str_score = st.number_input("STR", 1, 40, 10)
 #    int_score = st.number_input("INT", 1, 40, 10)
@@ -53,8 +52,9 @@ col_a1 = st.columns(1)
 # with col_a3:
 #    pow_score = st.number_input("POW", 1, 40, 10)
 #    cha_score = st.number_input("CHA", 1, 40, 10)
-with col_a1:
-    tou_score = st.number_input("TOU", 1, 40, 10)
+# with col_a1:
+#    tou_score = st.number_input("TOU", 1, 40, 10)
+tou_score = st.number_input("TOU", 1, 40, 10)
 
 #str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #int_mod = get_mod(int_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
