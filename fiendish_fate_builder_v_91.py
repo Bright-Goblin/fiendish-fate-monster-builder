@@ -359,7 +359,7 @@ monster_xp = 20 * level
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
 statblock = f"""{name.upper()} (L{level} {creature_type.upper()})
-# STR {str_score} ({str_mod}) | INT {int_score} ({int_mod}) | DEX {dex_score} ({dex_mod}) | CON {con_score} ({con_mod}) | POW {pow_score} ({pow_mod}) | CHA {cha_score} ({cha_mod}) | TOU {tou_score} ({resilience} / {grit})
+#STR {str_score} ({str_mod}) | INT {int_score} ({int_mod}) | DEX {dex_score} ({dex_mod}) | CON {con_score} ({con_mod}) | POW {pow_score} ({pow_mod}) | CHA {cha_score} ({cha_mod}) | TOU {tou_score} ({resilience} / {grit})
 AP {apv} | Move {move} | Initiative {initiative} | Size {size}
 HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
