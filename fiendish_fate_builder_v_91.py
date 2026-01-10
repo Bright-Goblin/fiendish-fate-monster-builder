@@ -55,6 +55,7 @@ st.header("Attributes")
 # with col_a1:
 #    tou_score = st.number_input("TOU", 1, 40, 10)
 tou_score = st.number_input("TOU", 1, 40, 10)
+tou_cost = tou_score - 4
 
 #str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #int_mod = get_mod(int_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
@@ -159,6 +160,7 @@ specials_table = {
     "Magical Absorption": {"mp": 8, "ap": 2, "cost": "EP 14", "desc": "Absorbs magic, converting it to EP or FP."},
     "Melee AoE": {"mp": 8, "ap": 2, "cost": "FP 10", "desc": "Wide melee strike, scalable by WR or number of targets. Increase FP cost for larger affected areas."},
     "Mind Shatter": {"mp": 9, "ap": 2, "cost": "EP 12", "desc": "Causes psychic disruption: stun, fear, or disorientation."},
+    "Night Vision": {"mp": 2, "ap": 0, "cost": "—", "desc": "The creature can see in darkness as though it were dim light up to 60 feet. Add 2 MP per addtional 20 feet range."},
     "Phase": {"mp": 4, "ap": 1, "cost": "EP 8", "desc": "Walks through matter for SR 3 rounds."},
     "Plane Shift": {"mp": 8, "ap": 2, "cost": "EP 16", "desc": "Shifts to another plane of existence."},
     "Poison Effect": {"mp": 4, "ap": 1, "cost": "—", "desc": "Inflicts poison. Effect can be weakening (3), damage (4), paralysis (8), petrification (10), or death (12). Adjust MP by severity."},
@@ -272,7 +274,7 @@ with st.expander("MP Cost Breakdown"):
   #  }
   #  attribute_scores = [str_score, int_score, dex_score, con_score, cha_score, pow_score, tou_score]
   #  mp_attributes = sum(attribute_mp_table.get(score, 0) for score in attribute_scores)
-  #  st.text(f"Attribute Cost: {mp_attributes}")
+    st.text(f"Toughness Cost: {tou_cost}")
 
     # Vitals MP Cost
     mp_hp = hpv / 5
@@ -319,7 +321,7 @@ with st.expander("MP Cost Breakdown"):
 
 # Total MP used
 # total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
-total_mp_used = round(mp_size + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+total_mp_used = round(mp_size + tou_cost + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
 if total_mp_used > mp_budget:
     color = "red"
 elif total_mp_used < mp_budget - 5:
