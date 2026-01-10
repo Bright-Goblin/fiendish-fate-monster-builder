@@ -55,7 +55,7 @@ st.header("Attributes")
 # with col_a1:
 #    tou_score = st.number_input("TOU", 1, 40, 10)
 tou_score = st.number_input("TOU", 1, 40, 10)
-tou_cost = tou_score - 4
+tou_cost = tou_score - 8
 
 #str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #int_mod = get_mod(int_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
@@ -292,11 +292,11 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"AP Cost: {mp_ap}")
   
     # Weapon WR MP
-    mp_weapons = max(0, max(wr_values, default=0) - 4)
+    mp_weapons = max(0, max(wr_values, default=0) - 0)
     st.text(f"Weapon Cost: {mp_weapons}")
 
     # DV MP Cost
-    mp_dv = average_dv * 2.8
+    mp_dv = average_dv * 2.5
 #    mp_dv = median_dv * 2.5
     
     st.text(f"DV Cost: {mp_dv}")
