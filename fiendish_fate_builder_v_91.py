@@ -18,7 +18,7 @@ st.title("Fiendish Fate Monster Builder")
 # --- Monster Basics ---
 st.header("Monster Basics")
 name = st.text_input("Monster Name", "Unnamed Monster")
-level = st.number_input("Level", 1, 200, 10)
+#level = st.number_input("Level", 1, 200, 10)
 creature_type = st.selectbox("Creature Type", [
     "Abyssal", "Beast", "Beast (Magical)", "Construct", "Dissonant", "Dragon",
     "Elemental", "Empyrean", "Humanoid", "Humanoid (Fae)", "Humanoid (Giant)",
@@ -253,7 +253,7 @@ carried_treasure = st.selectbox("Treasure Table", ["Poor", "Common", "Uncommon",
 description = st.text_area("Description", "Towering desert brute caked in crimson dust and dried blood...")
 
 # MP Budget from level
-mp_budget = level + 50
+#mp_budget = level + 50
 
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
@@ -292,7 +292,7 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"AP Cost: {mp_ap}")
   
     # Weapon WR MP
-    mp_weapons = max(0, max(wr_values, default=0) - 4)
+    mp_weapons = max(0, max(wr_values, default=0) - 0)
     st.text(f"Weapon Cost: {mp_weapons}")
 
     # DV MP Cost
@@ -322,24 +322,28 @@ with st.expander("MP Cost Breakdown"):
 # Total MP used
 # total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
 total_mp_used = round(mp_size + tou_cost + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
-if total_mp_used > mp_budget:
-    color = "red"
-elif total_mp_used < mp_budget - 5:
-    color = "orange"
-else:
-    color = "green"
+#if total_mp_used > mp_budget:
+#    color = "red"
+#elif total_mp_used < mp_budget - 5:
+#    color = "orange"
+#else:
+#    color = "green"
 
+#st.markdown(
+#    f"### <span style='color:{color}'>**Total MP Used: {total_mp_used} / {mp_budget}**</span>",
+#    unsafe_allow_html=True
+#)
 st.markdown(
-    f"### <span style='color:{color}'>**Total MP Used: {total_mp_used} / {mp_budget}**</span>",
+    f"### <span style='color:{color}'>**Total MP Used: {total_mp_used}**</span>",
     unsafe_allow_html=True
 )
 
-if total_mp_used > mp_budget:
-    st.error(f"Over MP Budget by {total_mp_used - mp_budget:.2f}! Monster may be overpowered")
-elif total_mp_used < mp_budget - 5:
-    st.warning(f"MP Budget underused by {mp_budget - total_mp_used:.2f}. Monster may be underpowered.")
-else:
-    st.success("MP Budget is balanced.")
+#if total_mp_used > mp_budget:
+#    st.error(f"Over MP Budget by {total_mp_used - mp_budget:.2f}! Monster may be overpowered")
+#elif total_mp_used < mp_budget - 5:
+#    st.warning(f"MP Budget underused by {mp_budget - total_mp_used:.2f}. Monster may be underpowered.")
+#else:
+#    st.success("MP Budget is balanced.")
 
 # --- XP Lookup Table ---
 #xp_table = {
@@ -355,7 +359,8 @@ else:
 #    91: 1820, 92: 1840, 93: 1860, 94: 1880, 95: 1900, 96: 1920, 97: 1940, 98: 1960, 99: 1980, 100: 2000
 #}
 #monster_xp = xp_table.get(level, 0)
-monster_xp = 20 * level
+#monster_xp = 20 * level
+monster_xp = 20 * round(total_mp_used-50,0)
 
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
