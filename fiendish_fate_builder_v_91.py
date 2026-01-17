@@ -327,7 +327,7 @@ total_mp_used = round(mp_size + tou_cost + mp_hp + mp_fp + mp_ep + mp_ap + mp_we
 #elif total_mp_used < mp_budget - 5:
 #    color = "orange"
 #else:
-#    color = "green"
+    color = "black"
 
 #st.markdown(
 #    f"### <span style='color:{color}'>**Total MP Used: {total_mp_used} / {mp_budget}**</span>",
