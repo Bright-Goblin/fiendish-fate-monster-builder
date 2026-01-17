@@ -64,7 +64,7 @@ tou_cost = tou_score - 8
 #pow_mod = get_mod(pow_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #cha_mod = get_mod(cha_score, [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 resilience = get_mod(tou_score, list(range(6, 26)), 1)
-#grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 
 # --- Vitals ---
 st.subheader("Vitals")
@@ -108,13 +108,13 @@ dv_rows = [st.columns(5), st.columns(5)]
 for i, k in enumerate(dv_types):
     with dv_rows[i // 5][i % 5]:
         base_val = st.number_input(f"{k}", 0, 35, 5, key=f"dv_{k}")
-        #dv_input[k] = base_val + grit
-        dv_input[k] = base_val
+        dv_input[k] = base_val + grit
+        #dv_input[k] = base_val
 dv_line = " | ".join([f"{k} {dv_value}" for k, dv_value in dv_input.items()])
 
 # Calculate average DV
-#average_dv = sum(dv_input.values()) / len(dv_input) - grit if dv_input else 0
-average_dv = sum(dv_input.values()) / len(dv_input) if dv_input else 0
+average_dv = sum(dv_input.values()) / len(dv_input) - grit if dv_input else 0
+#average_dv = sum(dv_input.values()) / len(dv_input) if dv_input else 0
 st.text(f"Average DV: {average_dv:.2f}")
 
 # Calculate median DV
@@ -299,7 +299,7 @@ with st.expander("MP Cost Breakdown"):
     mp_dv = average_dv * 2.5
 #    mp_dv = median_dv * 2.5
     
-    st.text(f"DV Cost: {mp_dv}")
+    st.text(f"DV Cost: {mp_dv.2f}")
   
     # Skills MP Cost
     mp_skills = 0
@@ -360,13 +360,12 @@ st.markdown(
 #    91: 1820, 92: 1840, 93: 1860, 94: 1880, 95: 1900, 96: 1920, 97: 1940, 98: 1960, 99: 1980, 100: 2000
 #}
 #monster_xp = xp_table.get(level, 0)
-#monster_xp = 20 * level
 level = round(total_mp_used-50,0)
 monster_xp = 20 * level
 
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
-statblock = f"""{name.upper()} (L{level} {creature_type.upper()})
+statblock = f"""{name.upper()} (L{level:.0f} {creature_type.upper()})
 AP {apv} | Move {move} | Initiative {initiative} | Size {size}
 HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
@@ -376,6 +375,6 @@ Specials:
 {chr(10).join(specials)}
 Description: {description}
 Treasure Table: {carried_treasure}
-XP: {monster_xp:,}
+XP: {monster_xp:,.0f}
 """
 st.text_area("Formatted Stat Block", statblock, height=400)
