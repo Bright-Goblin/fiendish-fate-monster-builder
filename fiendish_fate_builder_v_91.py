@@ -361,7 +361,8 @@ st.markdown(
 #}
 #monster_xp = xp_table.get(level, 0)
 #monster_xp = 20 * level
-monster_xp = 20 * round(total_mp_used-50,0)
+level = round(total_mp_used-50,0)
+monster_xp = 20 * level
 
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
