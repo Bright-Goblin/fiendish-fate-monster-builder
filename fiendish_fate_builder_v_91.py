@@ -136,8 +136,7 @@ for i, s in enumerate(skill_list):
         skills[s] = st.number_input(s, 0, 85, 16)
 
 # Calculate average skill
-avg_skill = round(sum(skills.values()) / len(skills), 0)
-
+avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
 
 # --- Specials ---
 #st.subheader("Specials")
