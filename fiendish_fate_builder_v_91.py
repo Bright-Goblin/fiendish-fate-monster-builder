@@ -292,7 +292,7 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"AP Cost: {mp_ap}")
   
     # Weapon WR MP
-    mp_weapons = max(0, max(wr_values, default=0) - 0)
+    mp_weapons = max(0, max(wr_values, default=0) - 2)
     st.text(f"Weapon Cost: {mp_weapons}")
 
     # DV MP Cost
