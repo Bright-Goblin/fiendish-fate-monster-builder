@@ -135,6 +135,10 @@ for i, s in enumerate(skill_list):
     with skill_cols[i % 3]:
         skills[s] = st.number_input(s, 0, 85, 16)
 
+# Calculate average skill
+avg_skill = round(sum(skills.values()) / len(skills), 0)
+
+
 # --- Specials ---
 #st.subheader("Specials")
 specials_table = {
@@ -302,18 +306,18 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"DV Cost: {mp_dv}")
   
     # Skills MP Cost
-    mp_skills = 0
-    for val in skills.values():
-        if val >= 80:
-            mp_skills += 2.5
-        elif val >= 70:
-            mp_skills += 2
-        elif val >= 60:
-            mp_skills += 1.5
-        elif val >= 50:
-            mp_skills += 1
-        elif val >= 30:
-            mp_skills += 0.5
+    mp_skills = avg_skill
+#    for val in skills.values():
+#        if val >= 80:
+#            mp_skills += 2.5
+#        elif val >= 70:
+#            mp_skills += 2
+#        elif val >= 60:
+#            mp_skills += 1.5
+#        elif val >= 50:
+#            mp_skills += 1
+#        elif val >= 30:
+#            mp_skills += 0.5
     st.text(f"Skill Cost: {mp_skills}")
 
     # Specials MP Cost
