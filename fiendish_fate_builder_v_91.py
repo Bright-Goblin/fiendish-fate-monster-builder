@@ -43,25 +43,28 @@ initiative = st.number_input("Initiative", 0, 100, 6)
 # --- Attributes ---
 st.header("Attributes")
 # col_a1, col_a2, col_a3, col_a4 = st.columns(4)
-# with col_a1:
-#    str_score = st.number_input("STR", 1, 40, 10)
+ col_a1, col_a2 = st.columns(4)
+ with col_a1:
+    str_score = st.number_input("STR", 1, 40, 10)
+    pow_score = st.number_input("POW", 1, 40, 10)
 #    int_score = st.number_input("INT", 1, 40, 10)
-# with col_a2:
-#    dex_score = st.number_input("DEX", 1, 40, 10)
+ with col_a2:
+    dex_score = st.number_input("DEX", 1, 40, 10)
+    tou_score = st.number_input("TOU", 1, 40, 10)
 #    con_score = st.number_input("CON", 1, 40, 10)
 # with col_a3:
 #    pow_score = st.number_input("POW", 1, 40, 10)
 #    cha_score = st.number_input("CHA", 1, 40, 10)
-# with col_a1:
+# with col_a4:
 #    tou_score = st.number_input("TOU", 1, 40, 10)
-tou_score = st.number_input("TOU", 1, 40, 10)
-tou_cost = tou_score - 8
+#tou_score = st.number_input("TOU", 1, 40, 10)
+#tou_cost = tou_score - 8
 
-#str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+str_mod = get_mod(str_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #int_mod = get_mod(int_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
-#dex_mod = get_mod(dex_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+dex_mod = get_mod(dex_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #con_mod = get_mod(con_score, [-5, -4, -3, -2, -1, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 1)
-#pow_mod = get_mod(pow_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
+pow_mod = get_mod(pow_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 #cha_mod = get_mod(cha_score, [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 resilience = get_mod(tou_score, list(range(6, 26)), 1)
 grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
@@ -133,62 +136,63 @@ skills = {}
 skill_cols = st.columns(3)
 for i, s in enumerate(skill_list):
     with skill_cols[i % 3]:
-        skills[s] = st.number_input(s, 0, 85, 16)
+        skills[s] = st.number_input(s, 0, 85, 10)
 
 # Calculate average skill
-avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
+#avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
+avg_skill = roundup((sum(skills.values()) / len(skills)) / 15, 0)
 
 # --- Specials ---
 #st.subheader("Specials")
 specials_table = {
     # Core Effects
-    "Breath Weapon": {"mp": 8, "ap": 2, "cost": "FP 12", "desc": "Exhales energy in a cone. Base WR 10 damage. Adjust MP: 2"},
+    "Breath Weapon": {"mp": 7, "ap": 2, "cost": "FP 12", "desc": "Exhales energy in a cone. Base WR 8 damage. Adjust MP: 2"},
     "Burrow": {"mp": 3, "ap": 1, "cost": "FP 0", "desc": "Tunnel through terrain as move action."},
-    "Charm": {"mp": 6, "ap": 2, "cost": "EP 9", "desc": "Charm as per the spell. Adjust MP: 3"},
-    "Corpse Explosion": {"mp": 6, "ap": 2, "cost": "EP 9", "desc": "Detonates a corpse for AoE damage. Base SR 8 damage. Adjust MP: 2"},
-    "Corruption": {"mp": 4, "ap": 2, "cost": "EP 6", "desc": "Persistent damage from a poison or other effect; SR 1 incorporeal damage for SR 0 (rounds). Adjust MP: 3"},
-    "Curse": {"mp": 6, "ap": 2, "cost": "EP 9", "desc": "Curse as per the spell; must be cured to be removed. Adjust MP: 6"},
-    "Death": {"mp": 12, "ap": 2, "cost": "EP 18", "desc": "Instant death as per Word of Death spell. Adjust MP: 6"},
+    "Charm": {"mp": 5, "ap": 2, "cost": "EP 9", "desc": "Charm as per the spell. Adjust MP: 3"},
+    "Corpse Explosion": {"mp": 5, "ap": 2, "cost": "EP 9", "desc": "Detonates a corpse for AoE damage. Base SR 6 damage. Adjust MP: 2"},
+    "Corruption": {"mp": 3, "ap": 2, "cost": "EP 6", "desc": "Persistent damage from a poison or other effect; SR 1 incorporeal damage for SR 0 (rounds). Adjust MP: 3"},
+    "Curse": {"mp": 5, "ap": 2, "cost": "EP 9", "desc": "Curse as per the spell; must be cured to be removed. Adjust MP: 6"},
+    "Death": {"mp": 11, "ap": 2, "cost": "EP 18", "desc": "Instant death as per Word of Death spell. Adjust MP: 6"},
     "Disease": {"mp": 5, "ap": 2, "cost": "FP 8", "desc": "Inflicts a disease; must be cured to be removed. Adjust MP: 2"},
-    "Entangle": {"mp": 6, "ap": 2, "cost": "FP 9", "desc": "Restrains or slows enemies with webbing, tendrils, or other physical means. Adjust MP: 3"},
-    "Environment Mastery": {"mp": 6, "ap": 0, "cost": "FP 0", "desc": "Ignores penalties and gains advantages in a specific terrain type. Adjust MP: 3"},
-    "Essence Drain": {"mp": 4, "ap": 2, "cost": "EP 6", "desc": "Permanently drains attributes, EP, FP, or levels; SR 0 incorporeal damage. Adjust MP: 2"},
+    "Entangle": {"mp": 5, "ap": 2, "cost": "FP 9", "desc": "Restrains or slows enemies with webbing, tendrils, or other physical means. Adjust MP: 3"},
+    "Environment Mastery": {"mp": 5, "ap": 0, "cost": "FP 0", "desc": "Ignores penalties and gains advantages in a specific terrain type. Adjust MP: 3"},
+    "Essence Drain": {"mp": 3, "ap": 2, "cost": "EP 6", "desc": "Permanently drains attributes, EP, FP, or levels; SR 0 incorporeal damage. Adjust MP: 2"},
     "Essence Stealing": {"mp": 7, "ap": 2, "cost": "EP 8", "desc": "Absorbs EP, FP, or HP from targets; SR 8 damage (corporeal) or SR 1 damage (incorporeal) and healing equal to damage done. Adjust MP: 3"},
-    "Exploding Corpse": {"mp": 8, "ap": 0, "cost": "—", "desc": "Creatures’ corpse explodes for SR 10 damage upon its death. Adjust MP: 3"},
-    "Extra Damaging": {"mp": 4, "ap": 0, "cost": "—", "desc": "Deals +1D6 bonus damage. Adjust MP: 4 per die; maximum 5d6."},
-    "Fast Healing": {"mp": 4, "ap": 0, "cost": "—", "desc": "Regenerates 1D6 HP per round. Adjust MP: 4 per die; maximum 5d6."},
-    "Fear": {"mp": 4, "ap": 2, "cost": "EP 6", "desc": "Fear as per the spell. Adjust MP: 2"},
-    "Fly": {"mp": 2, "ap": 1, "cost": "FP 3", "desc": "Can fly or levitate."},
-    "Haste": {"mp": 8, "ap": 3, "cost": "EP 12", "desc": "Grants target 1 AP for SR 0 (rounds). Adjust MP: 4"},
-    "Immunity": {"mp": 10, "ap": 0, "cost": "—", "desc": "Immunity to a single damage type, technique, lore or effect. Adjust MP: 6 per additional immunity."},
-    "Invisibility": {"mp": 6, "ap": 2, "cost": "FP 9", "desc": "Invisible as per the spell. Adjust MP: 3"},
-    "Magical Absorption": {"mp": 8, "ap": 2, "cost": "EP 12", "desc": "Absorbs magic, converting it to EP or FP. Base SR 8. Adjust MP: 4"},
-    "Material Ruin": {"mp": 8, "ap": 2, "cost": "EP 12", "desc": "Degrades or corrodes weapons or armor, by one condition level, on hit. Adjust MP: 4"},
-    "Melee AoE": {"mp": 8, "ap": 2, "cost": "FP 12", "desc": "Wide melee strike. Base WR 10. Adjust MP: 2"},
-    "Mind Shatter": {"mp": 8, "ap": 2, "cost": "EP 12", "desc": "Causes psychic disruption: stagger, stun, or disorientation. SR 0 (rounds). Adjust MP: 4"},
-    "Mutate": {"mp": 2, "ap": 1, "cost": "EP 3", "desc": "Applies a modifier to creatures or items. Base SR 0 or ± 1. Adjust MP: 2"},
-    "Night Vision": {"mp": 2, "ap": 0, "cost": "—", "desc": "Creature can see in darkness as though it were dim light up to 60 feet. Adjust MP: 2"},
-    "Paralysis": {"mp": 8, "ap": 2, "cost": "EP 12", "desc": "Paralysis status condition; SR 0 (rounds). Adjust MP: 4"},
+    "Exploding Corpse": {"mp": 7, "ap": 0, "cost": "—", "desc": "Creatures’ corpse explodes for SR 10 damage upon its death. Adjust MP: 3"},
+    "Extra Damaging": {"mp": 3, "ap": 0, "cost": "—", "desc": "Deals +1D6 bonus damage. Adjust MP: 4 per die; maximum 5d6."},
+    "Fast Healing": {"mp": 3, "ap": 0, "cost": "—", "desc": "Regenerates 1D6 HP per round. Adjust MP: 4 per die; maximum 5d6."},
+    "Fear": {"mp": 3, "ap": 2, "cost": "EP 6", "desc": "Fear as per the spell. Adjust MP: 2"},
+    "Fly": {"mp": 3, "ap": 1, "cost": "FP 3", "desc": "Can fly or levitate."},
+    "Haste": {"mp": 7, "ap": 3, "cost": "EP 12", "desc": "Grants target 1 AP for SR 0 (rounds). Adjust MP: 4"},
+    "Immunity": {"mp": 9, "ap": 0, "cost": "—", "desc": "Immunity to a single damage type, technique, lore or effect. Adjust MP: 6 per additional immunity."},
+    "Invisibility": {"mp": 5, "ap": 2, "cost": "FP 9", "desc": "Invisible as per the spell. Adjust MP: 3"},
+    "Magical Absorption": {"mp": 7, "ap": 2, "cost": "EP 12", "desc": "Absorbs magic, converting it to EP or FP. Base SR 8. Adjust MP: 4"},
+    "Material Ruin": {"mp": 7, "ap": 2, "cost": "EP 12", "desc": "Degrades or corrodes weapons or armor, by one condition level, on hit. Adjust MP: 4"},
+    "Melee AoE": {"mp": 7, "ap": 2, "cost": "FP 12", "desc": "Wide melee strike. Base WR 8. Adjust MP: 2"},
+    "Mind Shatter": {"mp": 7, "ap": 2, "cost": "EP 12", "desc": "Causes psychic disruption: stagger, stun, or disorientation. SR 0 (rounds). Adjust MP: 4"},
+    "Mutate": {"mp": 1, "ap": 1, "cost": "EP 3", "desc": "Applies a modifier to creatures or items. Base SR 0 or ± 1. Adjust MP: 2"},
+    "Night Vision": {"mp": 3, "ap": 0, "cost": "—", "desc": "Creature can see in darkness as though it were dim light up to 60 feet. Adjust MP: 2"},
+    "Paralysis": {"mp": 7, "ap": 2, "cost": "EP 12", "desc": "Paralysis status condition; SR 0 (rounds). Adjust MP: 4"},
     "Parasitic Infection": {"mp": 5, "ap": 2, "cost": "EP 8", "desc": "Embeds a parasite causing ongoing drain, delayed transformation, or secondary effects. Adjust MP: 2"},
-    "Petrify": {"mp": 10, "ap": 2, "cost": "EP 15", "desc": "Petrification status condition; SR 0 (rounds). Adjust MP: 5"},
-    "Phase": {"mp": 4, "ap": 1, "cost": "EP 6", "desc": "Walks through matter for SR 0 rounds. Adjust MP: 3"},
-    "Plane Shift": {"mp": 8, "ap": 2, "cost": "EP 12", "desc": "Shifts to another plane of existence. Adjust MP: 3"},
-    "Polymorph / Shape Shift": {"mp": 8, "ap": 2, "cost": "EP 12", "desc": "Polymorph as per the spell. Adjust MP: 3"},
-    "Reactive Defense": {"mp": 6, "ap": 1, "cost": "FP 9", "desc": "When struck, automatically triggers a defensive reaction. Base SR of 6. Adjust MP: 2"},
-    "Reduced Damage": {"mp": 2, "ap": 1, "cost": "FP 3", "desc": "Increases all DV by 2 for SR 0 (rounds) or reduce incoming type damage by 1 point. Adjust MP: 2"},
-    "Regeneration": {"mp": 12, "ap": 0, "cost": "EP 18", "desc": "Regrows lost limbs or body over time."},
-    "Resistances": {"mp": 4, "ap": 0, "cost": "—", "desc": "Takes half damage from one damage type. Adjust MP: 3 per addtional resistance"},
-    "Shatter Weapon": {"mp": 10, "ap": 2, "cost": "EP 15", "desc": "Destroys a mundane weapon on a successful parry. +10 MP to destroy magical items. Adjust MP: 5"},
-    "Sleep": {"mp": 6, "ap": 2, "cost": "EP 9", "desc": "Sleep as per the spell. Adjust MP: 3"},
+    "Petrify": {"mp": 9, "ap": 2, "cost": "EP 15", "desc": "Petrification status condition; SR 0 (rounds). Adjust MP: 5"},
+    "Phase": {"mp": 3, "ap": 1, "cost": "EP 6", "desc": "Walks through matter for SR 0 rounds. Adjust MP: 3"},
+    "Plane Shift": {"mp": 7, "ap": 2, "cost": "EP 12", "desc": "Shifts to another plane of existence. Adjust MP: 3"},
+    "Polymorph / Shape Shift": {"mp": 7, "ap": 2, "cost": "EP 12", "desc": "Polymorph as per the spell. Adjust MP: 3"},
+    "Reactive Defense": {"mp": 5, "ap": 1, "cost": "FP 9", "desc": "When struck, automatically triggers a defensive reaction. Base SR of 6. Adjust MP: 2"},
+    "Reduced Damage": {"mp": 3, "ap": 1, "cost": "FP 3", "desc": "Increases all DV by 2 for SR 0 (rounds) or reduce incoming type damage by 1 point. Adjust MP: 2"},
+    "Regeneration": {"mp": 11, "ap": 0, "cost": "EP 18", "desc": "Regrows lost limbs or body over time."},
+    "Resistances": {"mp": 3, "ap": 0, "cost": "—", "desc": "Takes half damage from one damage type. Adjust MP: 3 per addtional resistance"},
+    "Shatter Weapon": {"mp": 9, "ap": 2, "cost": "EP 15", "desc": "Destroys a mundane weapon on a successful parry. +10 MP to destroy magical items. Adjust MP: 5"},
+    "Sleep": {"mp": 5, "ap": 2, "cost": "EP 9", "desc": "Sleep as per the spell. Adjust MP: 3"},
     "Slime Trail": {"mp": 3, "ap": 0, "cost": "—", "desc": "Leaves difficult or damaging terrain behind. SR 4 damage or SR 0 (rounds) for terrain. Adjust MP: 2"},
-    "Slow": {"mp": 8, "ap": 3, "cost": "EP 12", "desc": "Lowers target’s AP by 1 for SR 0 (rounds). Adjust MP: 4"},
-    "Soul Anchor": {"mp": 12, "ap": 0, "cost": "EP 18", "desc": "Prevents true death or binds the soul. May cause delayed consequences or reforming."},
-    "Spell Reflection": {"mp": 8, "ap": 1, "cost": "EP 12", "desc": "Reflects a spell back at caster once per round for SR 0 (rounds). Adjust MP: 3"},
-    "Summon": {"mp": 6, "ap": 3, "cost": "EP 9", "desc": "Summon SR 3 creature(s) for SR 0 (rounds). Adjust MP: 3"},
-    "Swallow Whole": {"mp": 10, "ap": 2, "cost": "FP 15", "desc": "Swallows target two sizes smaller. Adjust MP: 3"},
-    "Teleport": {"mp": 6, "ap": 2, "cost": "EP 9", "desc": "Teleport to another visible or known location on same plane. Adjust MP: 3"},
-    "Trample": {"mp": 4, "ap": 1, "cost": "FP 6", "desc": "Charge that knocks down enemies. WR 8 damage. Adjust MP: 2"},
-    "Volatile Blood": {"mp": 6, "ap": 0, "cost": "—", "desc": "Damage from melee attacks or bleeds cause the creature’s blood to react violently, splashing corrosive ichor, igniting sparks, or releasing noxious fumes. SR 8 damage. Adjust MP: 3"}
+    "Slow": {"mp": 7, "ap": 3, "cost": "EP 12", "desc": "Lowers target’s AP by 1 for SR 0 (rounds). Adjust MP: 4"},
+    "Soul Anchor": {"mp": 11, "ap": 0, "cost": "EP 18", "desc": "Prevents true death or binds the soul. May cause delayed consequences or reforming."},
+    "Spell Reflection": {"mp": 7, "ap": 1, "cost": "EP 12", "desc": "Reflects a spell back at caster once per round for SR 0 (rounds). Adjust MP: 3"},
+    "Summon": {"mp": 5, "ap": 3, "cost": "EP 9", "desc": "Summon SR 3 creature(s) for SR 0 (rounds). Adjust MP: 3"},
+    "Swallow Whole": {"mp": 9, "ap": 2, "cost": "FP 15", "desc": "Swallows target two sizes smaller. Adjust MP: 3"},
+    "Teleport": {"mp": 5, "ap": 2, "cost": "EP 9", "desc": "Teleport to another visible or known location on same plane. Adjust MP: 3"},
+    "Trample": {"mp": 3, "ap": 1, "cost": "FP 6", "desc": "Charge that knocks down enemies. WR 8 damage. Adjust MP: 2"},
+    "Volatile Blood": {"mp": 5, "ap": 0, "cost": "—", "desc": "Damage from melee attacks or bleeds cause the creature’s blood to react violently, splashing corrosive ichor, igniting sparks, or releasing noxious fumes. SR 8 damage. Adjust MP: 3"}
 }
 
 st.subheader("Special Abilities")
@@ -209,7 +213,7 @@ for i in range(1, 11):
             custom_name = st.text_input(f"Custom Name {i}", "", key=f"custom_name_{i}")
             desc = st.text_input(f"Custom Desc {i}", "", key=f"custom_desc_{i}")
             ap = st.number_input(f"Custom AP {i}", 0, 10, 0, key=f"custom_ap_{i}")
-            action_type = st.selectbox(f"Action Type {i}", ["Interrupt","On-Turn", "Passive"], key=f"acttype_{i}")
+            action_type = st.selectbox(f"Action Type {i}", ["IT","OT", "PA"], key=f"acttype_{i}")
             ep = st.number_input(f"Custom EP {i}", 0, 100, 0, key=f"custom_ep_{i}")
             fp = st.number_input(f"Custom FP {i}", 0, 100, 0, key=f"custom_fp_{i}")
             mp = st.number_input(f"Custom MP {i}", 0, 50, 0, key=f"custom_mp_{i}")
@@ -283,8 +287,10 @@ with st.expander("MP Cost Breakdown"):
   #      31: 19, 32: 19, 33: 22, 34: 22, 35: 25, 36: 25, 37: 28, 38: 28, 39: 31, 40: 31
   #  }
   #  attribute_scores = [str_score, int_score, dex_score, con_score, cha_score, pow_score, tou_score]
+    attribute_scores = [str_score, dex_score, pow_score, tou_score]
   #  mp_attributes = sum(attribute_mp_table.get(score, 0) for score in attribute_scores)
-    st.text(f"Toughness Cost: {tou_cost}")
+    mp_attributes = sum(attribute_scores, 0) / 4 -2
+    #  st.text(f"Toughness Cost: {tou_cost}")
 
     # Vitals MP Cost
     mp_hp = hpv / 5
@@ -295,7 +301,12 @@ with st.expander("MP Cost Breakdown"):
   
     mp_ep = epv / 10
     st.text(f"EP Cost: {mp_ep}")  
-  
+
+    #Initiative MP Cost
+    mp_initiative = initiative - 6
+    st.text(f"Initiative Cost: {mp_initiative}")  
+
+    
     # AP MP Cost
     mp_ap_table = {1: -3, 2: 0, 3: 3, 4: 6, 5: 9, 6: 12, 7: 15}
     mp_ap = mp_ap_table.get(apv, 0)
@@ -312,7 +323,7 @@ with st.expander("MP Cost Breakdown"):
     st.text(f"DV Cost: {mp_dv}")
   
     # Skills MP Cost
-    mp_skills = avg_skill
+    mp_skills = avg_skill - 9
 #    for val in skills.values():
 #        if val >= 80:
 #            mp_skills += 2.5
@@ -331,7 +342,8 @@ with st.expander("MP Cost Breakdown"):
 
 # Total MP used
 # total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
-total_mp_used = round(mp_size + tou_cost + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+#total_mp_used = round(mp_size + tou_cost + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
+total_mp_used = roundup(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_initiative + mp_weapons + mp_dv + mp_skills + special_mp_total, 0)
 #if total_mp_used > mp_budget:
 #    color = "red"
 #elif total_mp_used < mp_budget - 5:
@@ -376,6 +388,7 @@ monster_xp = 20 * level
 # --- Statblock Preview ---
 st.header("Stat Block Preview")
 statblock = f"""{name.upper()} (L{level:.0f} {creature_type.upper()})
+STR {str_score} ({str_mod}) | DEX {dex_score} ({dex_mod}) | POW {pow_score} ({pow_mod}) | TOU {tou_score} ({resilience}, {grit})
 AP {apv} | Move {move} | Initiative {initiative} | Size {size}
 HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
@@ -383,8 +396,8 @@ Attack: {" | ".join(weapons)}
 Skills: {" | ".join(f"{k} {v}" for k, v in skills.items())}
 Specials:
 {chr(10).join(specials)}
-Description: {description}
 Treasure Table: {carried_treasure}
 XP: {monster_xp:,.0f}
+Description: {description}
 """
 st.text_area("Formatted Stat Block", statblock, height=400)
