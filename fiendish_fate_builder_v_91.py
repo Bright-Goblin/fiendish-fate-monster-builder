@@ -140,7 +140,7 @@ for i, s in enumerate(skill_list):
 
 # Calculate average skill
 #avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
-avg_skill = roundup((sum(skills.values()) / len(skills)), 0)
+avg_skill = math.ceil((sum(skills.values()) / len(skills))
 
 # --- Specials ---
 #st.subheader("Specials")
@@ -343,7 +343,7 @@ with st.expander("MP Cost Breakdown"):
 # Total MP used
 # total_mp_used = round(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
 #total_mp_used = round(mp_size + tou_cost + mp_hp + mp_fp + mp_ep + mp_ap + mp_weapons + mp_dv + mp_skills + special_mp_total, 2)
-total_mp_used = roundup(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_initiative + mp_weapons + mp_dv + mp_skills + special_mp_total, 0)
+total_mp_used = math.ceil(mp_size + mp_attributes + mp_hp + mp_fp + mp_ep + mp_ap + mp_initiative + mp_weapons + mp_dv + mp_skills + special_mp_total)
 #if total_mp_used > mp_budget:
 #    color = "red"
 #elif total_mp_used < mp_budget - 5:
