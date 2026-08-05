@@ -140,7 +140,7 @@ for i, s in enumerate(skill_list):
 
 # Calculate average skill
 #avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
-avg_skill = math.ceil((sum(skills.values()) / len(skills))
+avg_skill = math.ceil(sum(skills.values()) / len(skills))
 
 # --- Specials ---
 #st.subheader("Specials")
