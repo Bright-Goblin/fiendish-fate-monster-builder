@@ -264,11 +264,11 @@ for i in range(1, 11):
 
 # --- Flavor and Treasure ---
 st.header("Flavor & Treasure")
-carried_treasure = st.selectbox("Treasure Table", ["Poor", "Common", "Uncommon", "Rare", "Legendary"])
+carried_treasure = st.selectbox("Treasure Table", ["None", "Meager", "Modest", "Substantial", "Abundant", "Hoarded", "Mythic", "Artifact"])
 description = st.text_area("Description", "Towering desert brute caked in crimson dust and dried blood...")
 
 # MP Budget from level
-#mp_budget = level + 50
+#mp_budget = level + 60
 
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
@@ -383,7 +383,7 @@ st.markdown(
 #    91: 1820, 92: 1840, 93: 1860, 94: 1880, 95: 1900, 96: 1920, 97: 1940, 98: 1960, 99: 1980, 100: 2000
 #}
 #monster_xp = xp_table.get(level, 0)
-level = max(1, round(total_mp_used - 50, 0))
+level = max(1, round(total_mp_used - 60, 0))
 monster_xp = 20 * level
 
 # --- Statblock Preview ---
