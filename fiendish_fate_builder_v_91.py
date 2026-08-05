@@ -94,8 +94,8 @@ for i in range(1, 4):
         base_wr = st.number_input(f"WR {i}", 0, 40, 10)
     with col3:
         dtype = st.selectbox(f"Damage Type {i}", ["", "A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"], key=f"type_{i}")
-    #final_wr = base_wr + str_mod
-    final_wr = base_wr
+    final_wr = base_wr + str_mod
+    #final_wr = base_wr
     wr_values.append(base_wr)  # use base WR, not modified
     # Only add to the weapons list if the name is not blank
     if wname.strip():
