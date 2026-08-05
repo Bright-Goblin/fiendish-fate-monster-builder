@@ -1,6 +1,7 @@
 import streamlit as st
 import re
 import statistics
+import math
 
 # --- Helper Functions ---
 def extract_wr(weapon_str):
