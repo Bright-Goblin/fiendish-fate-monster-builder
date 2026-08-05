@@ -44,11 +44,11 @@ initiative = st.number_input("Initiative", 0, 100, 6)
 st.header("Attributes")
 # col_a1, col_a2, col_a3, col_a4 = st.columns(4)
 col_a1, col_a2 = st.columns(4)
- with col_a1:
+with col_a1:
     str_score = st.number_input("STR", 1, 40, 10)
     pow_score = st.number_input("POW", 1, 40, 10)
 #    int_score = st.number_input("INT", 1, 40, 10)
- with col_a2:
+with col_a2:
     dex_score = st.number_input("DEX", 1, 40, 10)
     tou_score = st.number_input("TOU", 1, 40, 10)
 #    con_score = st.number_input("CON", 1, 40, 10)
