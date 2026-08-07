@@ -384,7 +384,7 @@ st.markdown(
 #    91: 1820, 92: 1840, 93: 1860, 94: 1880, 95: 1900, 96: 1920, 97: 1940, 98: 1960, 99: 1980, 100: 2000
 #}
 #monster_xp = xp_table.get(level, 0)
-level = max(1, math.ceil(total_mp_used - 60, 0))
+level = max(1, round(total_mp_used - 60, 0))
 monster_xp = 20 * level
 
 # --- Statblock Preview ---
