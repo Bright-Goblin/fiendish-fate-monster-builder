@@ -133,10 +133,15 @@ skill_list = [
     "STL", "THR", "UA", "VIG", "WPN"
 ]
 skills = {}
-skill_cols = st.columns(3)
-for i, s in enumerate(skill_list):
-    with skill_cols[i % 3]:
-        skills[s] = st.number_input(s, 0, 85, 10)
+for i in range(0, len(skill_list), 5):
+    cols = st.columns(5)
+    for col, skill in zip(cols, skill_list[i:i+5]):
+        with col:
+            skills[skill] = st.number_input(skill, 0, 85, 10)
+#skill_cols = st.columns(3)
+#for i, s in enumerate(skill_list):
+#    with skill_cols[i % 3]:
+#        skills[s] = st.number_input(s, 0, 85, 10)
 
 # Calculate average skill
 #avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
