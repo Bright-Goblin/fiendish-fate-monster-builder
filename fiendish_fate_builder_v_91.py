@@ -50,11 +50,11 @@ with col_a1:
 with col_a2:
     dex_score = st.number_input("DEX", 1, 40, 10)
 #    con_score = st.number_input("CON", 1, 40, 10)
-# with col_a3:
+ with col_a3:
     pow_score = st.number_input("POW", 1, 40, 10)
 #    pow_score = st.number_input("POW", 1, 40, 10)
 #    cha_score = st.number_input("CHA", 1, 40, 10)
-# with col_a4:
+ with col_a4:
     tou_score = st.number_input("TOU", 1, 40, 10)
 #    tou_score = st.number_input("TOU", 1, 40, 10)
 #tou_score = st.number_input("TOU", 1, 40, 10)
