@@ -40,7 +40,7 @@ if 'Override Movement' not in st.session_state:
 override_movement = st.checkbox("Override Movement", value=st.session_state['Override Movement'])
 move = st.number_input("Movement (0 to 200)", 0, 200, default_move) if override_movement else default_move
 
-initiative = st.number_input("Initiative (-8 to 20)", -8, 20, 3)
+initiative = st.number_input("Initiative (-8 to 20); stat block result adds in DEX mod", -8, 20, 3)
 
 # --- Attributes ---
 st.header("Attributes (1 to 50)")
@@ -83,7 +83,7 @@ stun = int(hpv * 0.75)
 stagger = resilience
 
 # --- Weapons ---
-st.subheader("Weapons (1 to 40)")
+st.subheader("Weapons (1 to 40); stat block result adds in STR mod")
 weapons = []
 wr_values = []
 for i in range(1, 4):
@@ -103,7 +103,7 @@ for i in range(1, 4):
  #   weapons.append(f"{wname}, WR {final_wr} ({dtype})")
 
 # --- DV Breakdown ---
-st.subheader("Armor - DV (-8 to 35)")
+st.subheader("Armor - DV (-8 to 35); stat block result adds in TOU Grit mod")
 dv_input = {}
 dv_types = ["A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"]
 dv_rows = [st.columns(5), st.columns(5)]
