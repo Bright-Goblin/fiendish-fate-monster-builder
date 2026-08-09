@@ -27,7 +27,7 @@ creature_type = st.selectbox("Creature Type", [
 ])
 monster_role = st.selectbox("Monster Role", ["Brute", "Caster", "Skirmisher", "Leader"])
 size = st.selectbox("Size", ["Diminutive", "Tiny", "Small", "Medium", "Large", "Huge", "Gigantic", "Colossal"])
-apv = st.number_input("Action Points", 1, 7, 3)
+apv = st.number_input("Action Points (1 to 10)", 1, 10, 2)
 
 # Auto-fill movement based on Size
 movement_table = {
@@ -38,8 +38,9 @@ default_move = movement_table.get(size, 30)
 if 'Override Movement' not in st.session_state:
     st.session_state['Override Movement'] = False
 override_movement = st.checkbox("Override Movement", value=st.session_state['Override Movement'])
-move = st.number_input("Movement", 0, 100, default_move) if override_movement else default_move
-initiative = st.number_input("Initiative", 0, 100, 6)
+move = st.number_input("Movement (0 to 200)", 0, 200, default_move) if override_movement else default_move
+
+initiative = st.number_input("Initiative (-8 to 20)", -8, 20, 3)
 
 # --- Attributes ---
 st.header("Attributes (1 to 50)")
@@ -100,8 +101,6 @@ for i in range(1, 4):
     if wname.strip():
         weapons.append(f"{wname}, WR {final_wr} ({dtype})")
  #   weapons.append(f"{wname}, WR {final_wr} ({dtype})")
-
-
 
 # --- DV Breakdown ---
 st.subheader("Armor - DV (-8 to 35)")
@@ -314,7 +313,7 @@ with st.expander("MP Cost Breakdown"):
 
     
     # AP MP Cost
-    mp_ap_table = {1: -3, 2: 0, 3: 3, 4: 6, 5: 9, 6: 12, 7: 15}
+    mp_ap_table = {1: -3, 2: 0, 3: 3, 4: 6, 5: 9, 6: 12, 7: 15, 8: 20, 9: 25, 10: 30}
     mp_ap = mp_ap_table.get(apv, 0)
     st.text(f"AP Cost: {mp_ap}")
   
