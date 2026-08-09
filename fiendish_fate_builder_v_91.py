@@ -273,7 +273,7 @@ description = st.text_area("Description", "Towering desert brute caked in crimso
 # MP Budget from level
 #mp_budget = level + 60
 
-initmod = ({initiative}+{dex_mod})
+initmod = (initiative+dex_mod)
 
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
@@ -312,7 +312,6 @@ with st.expander("MP Cost Breakdown"):
     #Initiative MP Cost
     mp_initiative = initiative - 6
     st.text(f"Initiative Cost: {mp_initiative}")  
-
     
     # AP MP Cost
     mp_ap_table = {1: -3, 2: 0, 3: 3, 4: 6, 5: 9, 6: 12, 7: 15, 8: 20, 9: 25, 10: 30}
