@@ -45,17 +45,17 @@ initiative = st.number_input("Initiative", 0, 100, 6)
 st.header("Attributes")
 col_a1, col_a2, col_a3, col_a4 = st.columns(4)
 with col_a1:
-    str_score = st.number_input("STR", 1, 40, 10)
+    str_score = st.number_input("STR", 1, 50, 10)
 #    int_score = st.number_input("INT", 1, 40, 10)
 with col_a2:
-    dex_score = st.number_input("DEX", 1, 40, 10)
+    dex_score = st.number_input("DEX", 1, 50, 10)
 #    con_score = st.number_input("CON", 1, 40, 10)
 with col_a3:
-    pow_score = st.number_input("POW", 1, 40, 10)
+    pow_score = st.number_input("POW", 1, 50, 10)
 #    pow_score = st.number_input("POW", 1, 40, 10)
 #    cha_score = st.number_input("CHA", 1, 40, 10)
 with col_a4:
-    tou_score = st.number_input("TOU", 1, 40, 10)
+    tou_score = st.number_input("TOU", 1, 50, 10)
 #    tou_score = st.number_input("TOU", 1, 40, 10)
 #tou_score = st.number_input("TOU", 1, 40, 10)
 #tou_cost = tou_score - 8
@@ -110,7 +110,7 @@ dv_types = ["A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"]
 dv_rows = [st.columns(5), st.columns(5)]
 for i, k in enumerate(dv_types):
     with dv_rows[i // 5][i % 5]:
-        base_val = st.number_input(f"{k}", 0, 35, 5, key=f"dv_{k}")
+        base_val = st.number_input(f"{k}", -8, 35, 0, key=f"dv_{k}")
         dv_input[k] = base_val + grit
         #dv_input[k] = base_val
 dv_line = " | ".join([f"{k} {dv_value}" for k, dv_value in dv_input.items()])
