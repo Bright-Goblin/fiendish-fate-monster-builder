@@ -117,7 +117,7 @@ dv_line = " | ".join([f"{k} {dv_value}" for k, dv_value in dv_input.items()])
 # Calculate average DV
 average_dv = sum(dv_input.values()) / len(dv_input) - grit if dv_input else 0
 #average_dv = sum(dv_input.values()) / len(dv_input) if dv_input else 0
-#st.text(f"Average DV: {average_dv:2f}")
+st.text(f"Average DV: {average_dv:2f}")
 
 # Calculate median DV
 #dv_values = [v - grit for v in dv_input.values()] if dv_input else []
