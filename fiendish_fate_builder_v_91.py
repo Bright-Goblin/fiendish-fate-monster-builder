@@ -273,6 +273,8 @@ description = st.text_area("Description", "Towering desert brute caked in crimso
 # MP Budget from level
 #mp_budget = level + 60
 
+initmod = ({initiative}+{dex_mod})
+
 # --- MP Breakdown ---
 with st.expander("MP Cost Breakdown"):
     # Size MP Cost
@@ -394,7 +396,7 @@ monster_xp = 20 * level
 st.header("Stat Block Preview")
 statblock = f"""{name.upper()} (L{level:.0f} {creature_type.upper()})
 STR {str_score} ({str_mod}) | DEX {dex_score} ({dex_mod}) | POW {pow_score} ({pow_mod}) | TOU {tou_score} ({resilience}, {grit})
-AP {apv} | Move {move} | Initiative ({initiative}+{dex_mod}) | Size {size}
+AP {apv} | Move {move} | Initiative {initmod} | Size {size}
 HP {hpv} | FP {fpv} | EP {epv} | Stun {stun} | Stagger {stagger}
 DV: {dv_line}
 Attack: {" | ".join(weapons)}
