@@ -42,20 +42,20 @@ move = st.number_input("Movement", 0, 100, default_move) if override_movement el
 initiative = st.number_input("Initiative", 0, 100, 6)
 
 # --- Attributes ---
-st.header("Attributes")
+st.header("Attributes (1 to 50)")
 col_a1, col_a2, col_a3, col_a4 = st.columns(4)
 with col_a1:
-    str_score = st.number_input("STR", 1, 50, 10)
+    str_score = st.number_input("STR", 1, 50, 6)
 #    int_score = st.number_input("INT", 1, 40, 10)
 with col_a2:
-    dex_score = st.number_input("DEX", 1, 50, 10)
+    dex_score = st.number_input("DEX", 1, 50, 6)
 #    con_score = st.number_input("CON", 1, 40, 10)
 with col_a3:
-    pow_score = st.number_input("POW", 1, 50, 10)
+    pow_score = st.number_input("POW", 1, 50, 6)
 #    pow_score = st.number_input("POW", 1, 40, 10)
 #    cha_score = st.number_input("CHA", 1, 40, 10)
 with col_a4:
-    tou_score = st.number_input("TOU", 1, 50, 10)
+    tou_score = st.number_input("TOU", 1, 50, 6)
 #    tou_score = st.number_input("TOU", 1, 40, 10)
 #tou_score = st.number_input("TOU", 1, 40, 10)
 #tou_cost = tou_score - 8
@@ -70,19 +70,19 @@ resilience = get_mod(tou_score, list(range(6, 26)), 1)
 grit = get_mod(tou_score, [-3, -2, -2, -1, -1, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6], 2)
 
 # --- Vitals ---
-st.subheader("Vitals")
+st.subheader("Vitals (1 to 999)")
 col_a1, col_a2, col_a3, col_a4 = st.columns(4)
 with col_a1:
-    hpv = st.number_input("HP", 1, 999, 50)
+    hpv = st.number_input("HP", 1, 999, 1)
 with col_a2:
-    fpv = st.number_input("FP", 1, 999, 40)
+    fpv = st.number_input("FP", 1, 999, 1)
 with col_a3:
-    epv = st.number_input("EP", 1, 999, 25)
+    epv = st.number_input("EP", 1, 999, 1)
 stun = int(hpv * 0.75)
 stagger = resilience
 
 # --- Weapons ---
-st.subheader("Weapons")
+st.subheader("Weapons (1 to 40)")
 weapons = []
 wr_values = []
 for i in range(1, 4):
@@ -104,7 +104,7 @@ for i in range(1, 4):
 
 
 # --- DV Breakdown ---
-st.subheader("Armor (DV)")
+st.subheader("Armor - DV (-8 to 35)")
 dv_input = {}
 dv_types = ["A", "B", "C", "E", "F", "N", "P", "Ps", "R", "S"]
 dv_rows = [st.columns(5), st.columns(5)]
@@ -126,7 +126,7 @@ st.text(f"Average DV: {average_dv:2f}")
 #st.text(f"Median DV: {median_dv:.2f}")
 
 # --- Skills ---
-st.subheader("Skills (max 85)")
+st.subheader("Skills (1 to 85)")
 skill_list = [
     "ACR", "ATH", "BAL", "CS", "CTV",
     "DG", "IW", "PRY", "PER", "RC",
@@ -137,11 +137,11 @@ for i in range(0, len(skill_list), 5):
     cols = st.columns(5)
     for col, skill in zip(cols, skill_list[i:i+5]):
         with col:
-            skills[skill] = st.number_input(skill, 0, 85, 10)
+            skills[skill] = st.number_input(skill, 1, 85, 10)
 #skill_cols = st.columns(3)
 #for i, s in enumerate(skill_list):
 #    with skill_cols[i % 3]:
-#        skills[s] = st.number_input(s, 0, 85, 10)
+#        skills[s] = st.number_input(s, 1, 85, 10)
 
 # Calculate average skill
 #avg_skill = round((sum(skills.values()) / len(skills)) * 0.25, 2)
