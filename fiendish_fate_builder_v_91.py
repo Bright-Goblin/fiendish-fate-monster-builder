@@ -25,7 +25,7 @@ creature_type = st.selectbox("Creature Type", [
     "Elemental", "Empyrean", "Humanoid", "Humanoid (Fae)", "Humanoid (Giant)",
     "Infernal", "Monstrosity", "Phantom", "Undead", "Vegetal"
 ])
-monster_role = st.selectbox("Monster Role", ["Brute", "Caster", "Skirmisher", "Leader"])
+monster_role = st.selectbox("Monster Role (Not Currently in Use)", ["Brute", "Caster", "Skirmisher", "Leader"])
 size = st.selectbox("Size", ["Diminutive", "Tiny", "Small", "Medium", "Large", "Huge", "Gigantic", "Colossal"])
 apv = st.number_input("Action Points (1 to 10)", 1, 10, 2)
 
