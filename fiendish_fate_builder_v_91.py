@@ -205,7 +205,7 @@ st.subheader("Special Abilities")
 specials = []
 special_mp_total = 0
 
-for i in range(1, 11):
+for i in range(1, 16):
     col1, col2 = st.columns([2, 1])
     with col1:
         choice = st.selectbox(
